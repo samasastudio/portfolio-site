@@ -41,3 +41,7 @@ next-env.d.ts
 /.sites-runtime/
 /outputs/
 /work/
+
+# local mcp secrets
+.agents/plugins/**/mcp_config.json
+
