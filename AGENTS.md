@@ -16,14 +16,73 @@
 
 ---
 
-## 3. Architecture & Component Standards
-- **Server-First (RSC)**: Keep all pages and layouts in `app/` as Server Components by default. Only add `'use client'` to tiny, interactive leaf nodes.
-- **Zero Waterfalls**: Always parallelize independent async data fetches using `Promise.all()`.
-- **Component Composition**: Avoid boolean prop proliferation (e.g. `isOpen`, `isCompact`, `withBadge`). Use compound components (`Component.Root`, `Component.Header`, `Component.Content`) and slots.
+## 3. High-Level Architecture & Gateway Model
+- **Server-First (RSC)**: All route pages (`/`, `/work`, `/profile`, `/contact`) and layouts are Server Components by default.
+- **Isolated Leaf Hydration**: Only interactive leaves take `'use client'` (`LiveClock`, `NavRail`, and `ProjectArchive`).
+- **System Gateway Surface**: The portfolio serves as the primary frontend gateway for 3 upcoming application consoles:
+  1. *Generative UI Dashboard* (`app/systems/generative-ui` or embedded console).
+  2. *Self-Healing Web Scraper* (`app/systems/scraper` with external compute API/SSE).
+  3. *System Three* (TBD).
+- **Zero Waterfalls**: Parallelize independent async data fetches with `Promise.all()`.
+- **Config-Driven Props & Clear Seams**: Components accept explicit typed data props. Avoid boolean prop explosions and unneeded React Context overhead.
 
 ---
 
-## 4. Visual Identity & Design System
+## 4. Map of Project Organization
+
+```text
+app/
+├── _components/
+│   ├── home/
+│   │   ├── BrandEmblem.tsx         # Brand illustration container
+│   │   ├── CapabilityShelves.tsx   # 01/02/03 Vertical capability shelves
+│   │   └── HeroCopy.tsx            # Headline, description, and round CTA
+│   ├── layout/
+│   │   ├── LiveClock.tsx           # 'use client' Austin CT live timer
+│   │   ├── NavRail.tsx             # 'use client' Navigation rail with active route tracker
+│   │   ├── SiteFooter.tsx          # Server Component footer & ticker
+│   │   ├── SiteShell.tsx           # Master grid frame with route state class
+│   │   └── TopBar.tsx              # Server Component header bar
+│   └── ui/
+│       ├── BrandMark.tsx           # SAM ASA JOHNSON mark
+│       └── RoundLink.tsx           # Reusable circular CTA link
+├── _data/
+│   ├── navigation.ts               # Navigation route definitions
+│   └── site.ts                     # Global site constants & metadata
+├── _hooks/
+│   └── useClock.ts                 # Headless clock interval hook
+├── _types/
+│   ├── navigation.ts               # NavigationItem interface
+│   ├── project.ts                  # ProjectItem interface
+│   └── system.ts                   # Gateway system console interfaces
+├── contact/
+│   ├── _components/
+│   │   ├── ContactCopy.tsx         # Bio text & LinkedIn action button
+│   │   ├── ContactLead.tsx         # Contact heading
+│   │   └── SignalStatus.tsx        # Signal open indicator
+│   ├── _data.ts                    # Contact copy & channel config
+│   └── page.tsx                    # Server Component route entry
+├── profile/
+│   ├── _components/
+│   │   ├── CapabilityMap.tsx       # 3-part capability grid with center badge
+│   │   ├── Manifesto.tsx           # Reading room manifesto paragraphs
+│   │   ├── ProfileIntro.tsx        # Profile heading
+│   │   └── ToolsWall.tsx           # Working set tool list
+│   ├── _data.ts                    # Manifesto, capabilities, and toolset data
+│   └── page.tsx                    # Server Component route entry
+├── work/
+│   ├── _components/
+│   │   └── ProjectArchive.tsx      # 'use client' Interactive tablist & project card
+│   ├── _data.ts                    # Selected work archive items
+│   └── page.tsx                    # Server Component route entry
+├── globals.css                     # Design system, tokens, and responsive layout grids
+├── layout.tsx                      # Root layout rendering SiteShell (RSC)
+└── page.tsx                        # Home page route entry (RSC)
+```
+
+---
+
+## 5. Visual Identity & Design System
 - **Theme Variables**: Always reference the project's CSS variables defined in [`app/globals.css`](./app/globals.css):
   - Base Paper: `--paper` (`#f2eadc`), `--paper-light` (`#faf5ea`), `--paper-deep` (`#dfd1bc`)
   - Ink: `--ink` (`#191b18`)
@@ -37,7 +96,7 @@
 
 ---
 
-## 5. Engineering Workflows & Verification
+## 6. Engineering Workflows & Verification
 - Follow the workflows defined in [`docs/ENGINEERING_WORKFLOWS.md`](./docs/ENGINEERING_WORKFLOWS.md).
 - Use `tdd` for test-first development at public seams.
 - Use `diagnosing-bugs` for hypothesis-driven debugging without symptom-patching.

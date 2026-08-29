@@ -11,10 +11,14 @@ export const metadata: Metadata = {
   other: { "codex-preview": "development" },
 };
 
+import { SiteShell } from "./_components/layout/SiteShell";
+
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className={`${sans.variable} ${mono.variable}`}>{children}</body>
+      <body className={`${sans.variable} ${mono.variable}`}>
+        <SiteShell>{children}</SiteShell>
+      </body>
     </html>
   );
 }

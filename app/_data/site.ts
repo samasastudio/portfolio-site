@@ -1,0 +1,15 @@
+export const siteConfig = {
+  name: "Sam Johnson",
+  title: "Sam Johnson — Software Engineer",
+  role: "Software engineer",
+  location: "Austin, Texas",
+  locationShort: "Austin, TX",
+  timeZone: "America/Chicago",
+  status: "Frontend systems / product engineering / DX",
+  edition: "ED. 03",
+  copyrightYear: "2026",
+  copyrightHolder: "SAM ASA JOHNSON",
+  tickerText: "BUILD THE SYSTEM · LEAVE THE MAP · MAKE THE HARD PART FEEL HUMAN",
+  linkedinUrl: "https://www.linkedin.com/in/sam-asa-johnson",
+  snakeMarkImage: "/sam-johnson-snake-mark.png",
+} as const;
