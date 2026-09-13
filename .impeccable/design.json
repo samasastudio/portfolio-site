@@ -1,0 +1,300 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-13T00:58:00Z",
+  "title": "Design System: Sam Johnson",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "Vermilion Cinnabar",
+        "canonical": "#b64c31",
+        "tonalRamp": [
+          "#3a140b",
+          "#5e1f11",
+          "#8a2f1b",
+          "#b64c31",
+          "#ca6d55",
+          "#dc8f7c",
+          "#edb5a8",
+          "#f7ded8"
+        ]
+      },
+      "secondary": {
+        "role": "secondary",
+        "displayName": "Deep Indigo",
+        "canonical": "#263b61",
+        "tonalRamp": [
+          "#0d1626",
+          "#17243c",
+          "#263b61",
+          "#3b5585",
+          "#5773a8",
+          "#7c94c4",
+          "#a7b9dd",
+          "#dbe2f1"
+        ]
+      },
+      "tertiary": {
+        "role": "tertiary",
+        "displayName": "Ochre Gold",
+        "canonical": "#d6a934",
+        "tonalRamp": [
+          "#423207",
+          "#6e5411",
+          "#9f7b1f",
+          "#d6a934",
+          "#e2bd5b",
+          "#ecd288",
+          "#f5e6b7",
+          "#fbf5df"
+        ]
+      },
+      "moss": {
+        "role": "accent",
+        "displayName": "Sumi Pine Moss",
+        "canonical": "#67745a",
+        "tonalRamp": [
+          "#1b2017",
+          "#313a2a",
+          "#4b5741",
+          "#67745a",
+          "#849177",
+          "#a3ae98",
+          "#c4ccbc",
+          "#e6eae2"
+        ]
+      },
+      "cedar": {
+        "role": "accent",
+        "displayName": "Aged Cedar",
+        "canonical": "#805b42",
+        "tonalRamp": [
+          "#271a11",
+          "#432e20",
+          "#624430",
+          "#805b42",
+          "#9c775d",
+          "#b8957c",
+          "#d4b59f",
+          "#eed7c7"
+        ]
+      },
+      "neutral-bg": {
+        "role": "neutral",
+        "displayName": "Washi Rice Paper",
+        "canonical": "#f2eadc",
+        "tonalRamp": [
+          "#28221a",
+          "#4e4436",
+          "#7a6c57",
+          "#a99981",
+          "#d4c5ae",
+          "#dfd1bc",
+          "#f2eadc",
+          "#faf5ea"
+        ]
+      },
+      "neutral-bg-light": {
+        "role": "neutral",
+        "displayName": "Clean Sheet Paper",
+        "canonical": "#faf5ea",
+        "tonalRamp": [
+          "#2e281f",
+          "#554b3c",
+          "#817461",
+          "#b0a28d",
+          "#d9ccb9",
+          "#e8dfd0",
+          "#f2eadc",
+          "#faf5ea"
+        ]
+      },
+      "neutral-bg-deep": {
+        "role": "neutral",
+        "displayName": "Cardstock Deep",
+        "canonical": "#dfd1bc",
+        "tonalRamp": [
+          "#241e15",
+          "#463b2c",
+          "#6d5e49",
+          "#98866d",
+          "#c4b39a",
+          "#dfd1bc",
+          "#eee4d4",
+          "#faf5ea"
+        ]
+      },
+      "neutral-ink": {
+        "role": "neutral",
+        "displayName": "Sumi Tattoo Ink",
+        "canonical": "#191b18",
+        "tonalRamp": [
+          "#080907",
+          "#111210",
+          "#191b18",
+          "#343832",
+          "#555a52",
+          "#7b8178",
+          "#a8aca5",
+          "#dcdedb"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Hero headlines and stage declarations with tight tracking."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Featured system card titles and secondary section leads."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Georgia serif archive listings and catalogue project names."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Expository case studies and reading room manifestos."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Navigation coordinates, live clock, status beacons, and ticker items."
+      }
+    },
+    "shadows": [
+      {
+        "name": "stamp-drop",
+        "value": "4px 4px 0 #dfd1bc",
+        "purpose": "Physical offset drop shadow for resting catalogue cards."
+      },
+      {
+        "name": "stamp-drop-hover",
+        "value": "1px 6px 0 #dfd1bc",
+        "purpose": "Peeling card tactile lift upon hover."
+      },
+      {
+        "name": "stamp-drop-active",
+        "value": "5px 5px 0 #191b18",
+        "purpose": "Assertive ink offset drop shadow for selected catalogue cards."
+      },
+      {
+        "name": "pulse-ring",
+        "value": "0 0 0 5px rgba(103, 116, 90, 0.12)",
+        "purpose": "Operational status pulse halo."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-physical",
+        "value": "cubic-bezier(.16, 1, .3, 1)",
+        "purpose": "Snappy physical mechanical transition curve."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "mobile",
+        "value": "900px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Circular Stamp Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Asymmetrical hand-cut stamp link with inset ring and off-axis rotation.",
+      "html": "<a class=\"ds-round-link\" href=\"#\"><span>START A CONVERSATION</span><b>↗</b></a>",
+      "css": ".ds-round-link { position: relative; width: 118px; min-height: 112px; display: flex; flex-direction: column; justify-content: space-between; padding: 18px; background: #b64c31; color: #faf5ea; border-radius: 50% 48% 46% 54%; font-family: monospace; font-size: 8px; line-height: 1.45; text-transform: uppercase; letter-spacing: .07em; transform: rotate(-4deg); transition: transform .35s cubic-bezier(.16, 1, .3, 1), background .35s; text-decoration: none; box-sizing: border-box; } .ds-round-link::after { content: \"\"; position: absolute; inset: 6px; border: 1px solid rgba(255,255,255,.42); border-radius: inherit; pointer-events: none; } .ds-round-link:hover { transform: rotate(2deg) translate(4px, -5px); background: #263b61; } .ds-round-link b { align-self: flex-end; font-size: 18px; font-weight: 400; }"
+    },
+    {
+      "name": "Catalogue Index Tab",
+      "kind": "card",
+      "refersTo": "tab-catalogue",
+      "description": "Library catalogue card button with hard offset shadow and active stamp.",
+      "html": "<button class=\"ds-tab-btn\"><small>01 / PRODUCT ENGINEERING</small><span>Accounting analysis & reporting</span><b>SYSTEMS, NOT SCREENS</b></button>",
+      "css": ".ds-tab-btn { width: 100%; min-height: 110px; text-align: left; border: 1px solid rgba(25,27,24,.12); border-radius: 2px; background: #faf5ea; color: #191b18; padding: 18px; display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto 1fr; gap: 10px; cursor: pointer; box-shadow: 4px 4px 0 #dfd1bc; transition: .3s cubic-bezier(.16, 1, .3, 1); box-sizing: border-box; } .ds-tab-btn small { font-family: monospace; font-size: 7px; opacity: .56; letter-spacing: .1em; text-transform: uppercase; } .ds-tab-btn span { align-self: end; font-family: Georgia, serif; font-size: 18px; line-height: 1.08; } .ds-tab-btn b { font-family: monospace; font-size: 7px; color: #b64c31; letter-spacing: .08em; text-transform: uppercase; } .ds-tab-btn:hover { transform: translate(3px, -3px); box-shadow: 1px 6px 0 #dfd1bc; } .ds-tab-btn.active { background: #d6a934; border-color: #191b18; box-shadow: 5px 5px 0 #191b18; }"
+    },
+    {
+      "name": "Navigation Rail Item",
+      "kind": "nav",
+      "refersTo": "nav-rail-item",
+      "description": "Vertical ticket link with physical indicator bar and state transitions.",
+      "html": "<a class=\"ds-nav-item\" href=\"#\"><small>01 / GATEWAY</small><span>Systems</span><b>01</b></a>",
+      "css": ".ds-nav-item { min-height: 72px; padding: 13px 12px; display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto 1fr; border: 1px solid transparent; border-radius: 2px; position: relative; overflow: hidden; background: rgba(250,245,234,.45); color: #191b18; text-decoration: none; transition: transform .35s cubic-bezier(.16, 1, .3, 1), background .35s, color .35s; box-sizing: border-box; } .ds-nav-item::before { content: \"\"; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: #dfd1bc; transition: background .35s; } .ds-nav-item small { font-family: monospace; font-size: 7px; letter-spacing: .12em; opacity: .52; text-transform: uppercase; } .ds-nav-item span { align-self: end; font-family: Georgia, serif; font-size: 14px; } .ds-nav-item b { align-self: end; font-family: monospace; font-size: 13px; font-weight: 400; color: #b64c31; } .ds-nav-item:hover { transform: translateX(3px); background: #faf5ea; } .ds-nav-item.active { background: #263b61; color: #faf5ea; border-color: #263b61; } .ds-nav-item.active::before { background: #b64c31; } .ds-nav-item.active b { color: #d6a934; }"
+    },
+    {
+      "name": "Deep Indigo System Card",
+      "kind": "card",
+      "refersTo": "card-system",
+      "description": "Monolithic indigo slate with inset hairline border and gold star badge.",
+      "html": "<div class=\"ds-card-system\"><div class=\"ds-card-top\"><span>FEATURED SYSTEM</span><span>ACTIVE</span></div><h2>Self-Healing Web Scraper</h2><p>Autonomous browser cluster parsing dynamic DOM mutations into typed streams.</p><div class=\"ds-card-result\"><small>COMPUTE</small><strong>WORKERS / SSE</strong></div></div>",
+      "css": ".ds-card-system { padding: 32px; display: flex; flex-direction: column; position: relative; background: #263b61; color: #faf5ea; border-radius: 2px; overflow: hidden; box-sizing: border-box; } .ds-card-system::before { content: \"\"; position: absolute; inset: 11px; border: 1px solid rgba(250,245,234,.22); pointer-events: none; } .ds-card-system::after { content: \"✦\"; position: absolute; right: 28px; top: 28px; color: #d6a934; font-size: 22px; } .ds-card-top { display: flex; justify-content: space-between; font-family: monospace; font-size: 7px; text-transform: uppercase; letter-spacing: .1em; position: relative; z-index: 1; margin-bottom: 24px; } .ds-card-system h2 { font-family: sans-serif; font-size: 36px; line-height: .93; letter-spacing: -.052em; margin: 0 0 16px; font-weight: 600; } .ds-card-system p { font-family: sans-serif; font-size: 14px; line-height: 1.62; margin: 0 0 24px; opacity: .9; } .ds-card-result { border-top: 1px solid rgba(250,245,234,.32); padding-top: 14px; display: flex; justify-content: space-between; align-items: flex-end; font-family: monospace; font-size: 7px; text-transform: uppercase; letter-spacing: .09em; } .ds-card-result strong { font-size: 10px; color: #d6a934; font-weight: 650; }"
+    },
+    {
+      "name": "Live Status Indicator",
+      "kind": "custom",
+      "refersTo": "status-pulse",
+      "description": "Live beacon with subtle pulsing radar ring.",
+      "html": "<div class=\"ds-status\"><span class=\"ds-pulse\"></span><span>SIGNAL OPEN</span></div>",
+      "css": ".ds-status { display: inline-flex; align-items: center; gap: 8px; font-family: monospace; font-size: 7px; text-transform: uppercase; letter-spacing: .12em; color: #191b18; } .ds-pulse { width: 6px; height: 6px; border-radius: 50%; background: #67745a; box-shadow: 0 0 0 5px rgba(103,116,90,.12); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Japanese Library Meets American Traditional Tattoo Shop",
+    "overview": "A deliberate paradox representing the act of crawling the labyrinthine web and cutting past hollow complexity to build software systems that carry real weight. The aesthetic merges the disciplined serenity, architectural grid geometry, and tactile paper density of a classical Japanese reading room with the bold, indelible linework, flash pigment palette, and defiant physical presence of traditional tattooing.\n\nSurfaces reject the generic sanitized gloss and purple gradients of ephemeral AI boilerplate. Instead, the interface establishes an uncompromising sense of physical permanence: unbleached washi paper canvases, sumi tattoo ink rules, woodblock cedar frames, and hand-cut flash stamps in vermilion cinnabar, deep indigo, and ochre gold. Micro-structures feel indexed, archived, and measured with surgical typesetting.",
+    "keyCharacteristics": [
+      "Disciplined, tactile, punchy, and indelible; archival precision meeting high-contrast grit.",
+      "Flat paper planes layered with hard-edge offset drop shadows (zero diffuse blurry elevation).",
+      "Typographic tri-system: tight-tracked display sans, literary Georgia serif italics, and uppercase monospace micro-indices.",
+      "Asymmetrical hand-stamped badges rotated off-axis against rigid structural layout grids.",
+      "Visible tactile noise texture (mix-blend-mode: multiply) applied across the entire viewport."
+    ],
+    "rules": [
+      {
+        "name": "The Flash Rarity Rule",
+        "body": "Vermilion Cinnabar (#b64c31) and Ochre Gold (#d6a934) are high-potency flash pigments. They must occupy ≤10% of any given viewport surface; their rarity preserves their indelible impact.",
+        "section": "colors"
+      },
+      {
+        "name": "The No-Faux-White Rule",
+        "body": "Pure digital white (#ffffff) is strictly prohibited as a background or surface tone. All white space must breathe through warm, unbleached paper stocks (#f2eadc, #faf5ea).",
+        "section": "colors"
+      },
+      {
+        "name": "The Labyrinth & Linotype Rule",
+        "body": "Monospace micro-labels must never exceed 8px. They serve strictly as precision navigational coordinates and catalog numbers, anchoring the eye without competing with display headlines.",
+        "section": "typography"
+      },
+      {
+        "name": "The Soul in Italics Rule",
+        "body": "Emotional resonance, philosophical stances, and visual emphasis belong in Georgia serif italics (em), creating a tactile dialogue with the rigid sans frame.",
+        "section": "typography"
+      },
+      {
+        "name": "The Indelible Offset Rule",
+        "body": "Shadows must have a blur radius of exactly 0px. Elevation is a physical offset cut with a sharp edge, never a blurred Gaussian haze.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Tactile Grain Rule",
+        "body": "The entire interface carries an ambient fractal noise overlay (mix-blend-mode: multiply, opacity 0.23) fixed over the viewport, grounding digital pixels into raw physical paper fibers.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do maintain the master paper and ink contrast ratio across all new surfaces.",
+      "Do use hard offset drop shadows (4px 4px 0) with zero blur radius for elevated cards.",
+      "Do pair tight-tracked sans display typography with Georgia serif italics for reflective emphasis.",
+      "Do keep monospace metadata strictly at 7px–8px with generous letter-spacing (0.12em).",
+      "Do rotate signature stamp seals off-axis (-4° to -8°) to preserve the human, hand-pressed character."
+    ],
+    "donts": [
+      "Don't use diffuse, blurred Gaussian drop shadows or glow effects anywhere in the system.",
+      "Don't use pure digital white (#ffffff) or sterile corporate grays (#f3f4f6, #9ca3af) for background canvas.",
+      "Don't introduce generic floating rounded pills (rounded-full) for rectangular buttons or cards.",
+      "Don't use arbitrary inline color strings; always reference established CSS variables or design tokens.",
+      "Don't create purple-on-white gradients or generic AI-slop visual tropes."
+    ]
+  }
+}
