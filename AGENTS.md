@@ -83,15 +83,24 @@ app/
 ---
 
 ## 5. Visual Identity & Design System
+- **Creative North Star**: *"Japanese Library Meets American Traditional Tattoo Shop"* — disciplined shōji grid structures and unbleached paper density meeting indelible tattoo flash pigments, sumi linework, and physical presence.
+- **Design Authority**: Normative tokens and rules live in [`DESIGN.md`](./DESIGN.md) and [`PRODUCT.md`](./PRODUCT.md).
 - **Theme Variables**: Always reference the project's CSS variables defined in [`app/globals.css`](./app/globals.css):
-  - Base Paper: `--paper` (`#f2eadc`), `--paper-light` (`#faf5ea`), `--paper-deep` (`#dfd1bc`)
-  - Ink: `--ink` (`#191b18`)
-  - Accents: `--rust` (`#b64c31`), `--indigo` (`#263b61`), `--moss` (`#67745a`), `--cedar` (`#805b42`), `--yellow` (`#d6a934`)
+  - Base Paper: `--paper` (Washi Rice Paper `#f2eadc`), `--paper-light` (Clean Sheet `#faf5ea`), `--paper-deep` (Cardstock Deep `#dfd1bc`)
+  - Ink: `--ink` (Sumi Tattoo Ink `#191b18`)
+  - Flash & Accents: `--rust` (Vermilion Cinnabar `#b64c31`), `--indigo` (Deep Indigo `#263b61`), `--moss` (Sumi Pine `#67745a`), `--cedar` (Aged Cedar `#805b42`), `--yellow` (Ochre Gold `#d6a934`)
   - Transitions: `--ease` (`cubic-bezier(.16, 1, .3, 1)`)
 - **Typographic Hierarchy**:
   - Headings: Display sans with tight tracking.
   - Emphasis: Georgia serif italics (`em`).
   - Metadata / Micro-labels: Uppercase monospace (`font-mono text-[7px] tracking-widest`).
+- **Named System Invariants**:
+  - *The Flash Rarity Rule*: Cinnabar and Ochre Gold are reserved for focal accents ($\le 10\%$ of surface).
+  - *The No-Faux-White Rule*: Pure digital white (`#ffffff`) is banned; surfaces use warm paper stock.
+  - *The Indelible Offset Rule*: Zero Gaussian blur shadows; elevation is physical hard offsets (`4px 4px 0`, `5px 5px 0`).
+  - *The Labyrinth & Linotype Rule*: Micro-labels must not exceed 8px.
+  - *The Soul in Italics Rule*: Reflective emphasis lives in Georgia serif italics.
+  - *The Tactile Grain Rule*: Preserve the ambient fractal noise overlay across viewports.
 - **Anti-AI Slop**: No generic purple-on-white gradients, unstyled system fonts, or cookie-cutter templates. Preserve tactile noise textures, subtle drop shadows, and editorial framing.
 
 ---
@@ -100,4 +109,5 @@ app/
 - Follow the workflows defined in [`docs/ENGINEERING_WORKFLOWS.md`](./docs/ENGINEERING_WORKFLOWS.md).
 - Use `tdd` for test-first development at public seams.
 - Use `diagnosing-bugs` for hypothesis-driven debugging without symptom-patching.
+- **Impeccable Workflow**: New surfaces default to `comp-first` (generate visual comp before code) per [`.impeccable/config.json`](./.impeccable/config.json). Maintain [`DESIGN.md`](./DESIGN.md) and [`.impeccable/design.json`](./.impeccable/design.json) synchronization.
 - Verify changes with `npm test` or `npx tsc --noEmit` before concluding tasks.
