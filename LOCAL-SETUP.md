@@ -1,57 +1,59 @@
-# Sam Johnson Portfolio — Version 3
+# Sam Johnson Portfolio & Compute Atlas Gateway — Local Setup
 
-This archive contains the complete source for the third portfolio edition: the
-Austin flash-tattoo identity, Nordic color, and Japanese-library-inspired layout.
+Complete local development and verification guide for the portfolio and Compute Atlas gateway systems.
 
-## Requirements
+## Prerequisites
 
-- Node.js 22.13.0 or newer
-- npm (included with Node.js)
-- A terminal that can run Bash commands
+- Node.js `>=22.13.0`
+- npm (bundled with Node.js)
+- Bash-compatible terminal (on Windows 11, WSL2 or Git Bash)
 
-On Windows 11, WSL2 is the most reliable environment for both development and
-production builds. Git Bash is also suitable for the development command.
+## Development Workflow
 
-## Start the development site
+1. **Install locked dependencies**:
+   ```bash
+   npm ci
+   ```
 
-Open a terminal in the extracted `sam-johnson-portfolio-v3` folder, then run:
+2. **Start the local development server**:
+   ```bash
+   npm run dev
+   ```
+   Open `http://localhost:5173` in your browser.
 
-```bash
-npm ci
-npm run dev
-```
+3. **Stop the development server**:
+   Press `Ctrl+C`.
 
-Open the local address printed by the terminal. Vite normally uses
-`http://localhost:5173`.
+## Production Build & Verification
 
-Stop the server with `Ctrl+C`.
-
-## Production build
-
-The production helper scripts target Linux and require Bash plus GNU `timeout`.
-On Windows, run these commands in WSL2:
+The production build scripts package the application into a Cloudflare Workers Sites artifact in `dist/`:
 
 ```bash
-npm ci
-npm run build
+# Full test suite: production build, artifact validation, and rendered HTML assertions
+npm test
+
+# Strict TypeScript verification across all modules
+npx tsc --noEmit
+
+# Recheck packaged Sites manifest and ESM default export
+npm run validate:artifact
+
+# Generate Drizzle ORM migrations from schema definitions
+npm run db:generate
 ```
 
-The validated production output is written to `dist/`.
+## Key Directory Map
 
-## Useful files
-
-- `app/ui.tsx` — page content, navigation, and project interactions
-- `app/globals.css` — the complete visual system and responsive layouts
-- `public/sam-johnson-snake-mark.png` — the portfolio emblem
-- `app/page.tsx` — home route
-- `app/work/page.tsx` — selected-work route
-- `app/profile/page.tsx` — profile route
-- `app/contact/page.tsx` — contact route
-
-## Notes
-
-- `node_modules/`, generated builds, caches, and local runtime files are not
-  included. `npm ci` recreates the exact dependency tree from `package-lock.json`.
-- The site does not require a database, environment variables, or API keys.
-- Keep the included `.openai/hosting.json`; the build uses its empty binding
-  declarations even when running locally.
+- `app/layout.tsx` — Root layout rendering `SiteShell` with inverted RSC slots (`header`, `nav`, `footer`).
+- `app/_components/layout/` — Shell frame, `TopBar` (RSC), `SiteFooter` (RSC), and interactive leaves (`LiveClock`, `NavRail`).
+- `app/_components/home/` — Home page presentation components (`HeroCopy`, `BrandEmblem`, `CapabilityShelves`).
+- `app/work/` — Selected work archive route and interactive `ProjectArchive` component.
+- `app/profile/` — Reading room manifesto, capabilities grid, and tools wall.
+- `app/contact/` — Communication channels and contact route.
+- `app/_data/systems.ts` — Metadata and status contracts for the 3 gateway surfaces.
+- `app/_types/system.ts` — Strongly-typed `SystemGatewayContract` and `SystemItem` interfaces.
+- `app/globals.css` — Design tokens (`--paper`, `--ink`, `--rust`, etc.) and responsive layout grids.
+- `db/schema.ts` — Typed Drizzle ORM schemas for the 11 Compute Atlas entities per ADR-0004.
+- `db/index.ts` — D1 database binding initialization.
+- `worker/index.ts` — Cloudflare Worker fetch handler and image optimization entry.
+- `worker/worker-env.d.ts` — Ambient type declarations for Cloudflare Worker runtime bindings.

@@ -12,12 +12,21 @@ export const metadata: Metadata = {
 };
 
 import { SiteShell } from "./_components/layout/SiteShell";
+import { TopBar } from "./_components/layout/TopBar";
+import { NavRail } from "./_components/layout/NavRail";
+import { SiteFooter } from "./_components/layout/SiteFooter";
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
       <body className={`${sans.variable} ${mono.variable}`}>
-        <SiteShell>{children}</SiteShell>
+        <SiteShell
+          header={<TopBar />}
+          nav={<NavRail />}
+          footer={<SiteFooter />}
+        >
+          {children}
+        </SiteShell>
       </body>
     </html>
   );
