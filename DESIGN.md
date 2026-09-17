@@ -5,7 +5,7 @@ colors:
   primary: "#b64c31"
   secondary: "#263b61"
   tertiary: "#d6a934"
-  moss: "#67745a"
+  moss: "#4e5d42"
   cedar: "#805b42"
   neutral-bg: "#f2eadc"
   neutral-bg-light: "#faf5ea"
@@ -38,7 +38,7 @@ typography:
     lineHeight: 1.62
   label:
     fontFamily: "var(--font-mono), monospace"
-    fontSize: "7px"
+    fontSize: "9px"
     fontWeight: 400
     letterSpacing: "0.12em"
 rounded:
@@ -109,7 +109,7 @@ The palette draws strictly from flash pigments and archival paper stocks: indeli
 - **Ochre Gold** (#d6a934): The flash highlight. Applied to card catalogue active states, star badges (`✦`), circular card seals, and signal indicator beacons.
 
 ### Accents
-- **Sumi Pine Moss** (#67745a): Applied to live operational pulse indicators and DX capability blocks.
+- **Sumi Pine Moss** (#4e5d42): Applied to live operational status indicators and DX capability blocks. Darkened to maintain WCAG AA contrast against washi paper.
 - **Aged Cedar** (#805b42): Warm woodblock casing surrounding the primary brand emblem field.
 
 ### Neutral
@@ -141,10 +141,12 @@ The typographic hierarchy combines three distinct voices: an authoritative tight
 - **Headline** (Weight 600, `clamp(35px, 4vw, 66px)`, Line-height 0.93, Letter-spacing -0.052em): Featured system card titles and secondary section leads.
 - **Title** (Weight 400, `clamp(17px, 1.5vw, 23px)`, Line-height 1.08): Georgia serif archive project listings and catalogue titles.
 - **Body** (Weight 400, 14px, Line-height 1.62): Explanatory paragraphs, case study narratives, and reading room manifesto copy (max line length 65–75ch).
-- **Label** (Weight 400, 7px, Letter-spacing 0.12em, Uppercase): Coordinates, index numbers (`01/02/03`), timestamps, status beacons, and ticker items.
+- **Label** (Weight 400, 9px, Letter-spacing 0.12em, Uppercase): Coordinates, index numbers (`01/02/03`), timestamps, status beacons, and ticker items.
 
 ### Named Rules
-**The Labyrinth & Linotype Rule.** Monospace micro-labels must never exceed 8px. They serve strictly as precision navigational coordinates and catalog numbers, anchoring the eye without competing with display headlines.
+**The Accessible Linotype Rule.** Monospace micro-labels must maintain an accessible floor of 8.5px–10px; sub-8px text is strictly prohibited. Archival density is achieved through generous tracking (`0.12em`) and muted ink opacity, ensuring WCAG AA legibility while preserving catalog taxonomy.
+
+**The Zero-Pulsing-Dot Rule.** Surfaces reject decorative blinking dots and ambient gradient halos. Status indicators are steady, high-contrast marks; animations are reserved solely for genuinely live streaming data channels.
 
 **The Soul in Italics Rule.** Emotional resonance, philosophical stances, and visual emphasis belong in Georgia serif italics (`em`), creating a tactile dialogue with the rigid sans frame.
 
@@ -217,11 +219,12 @@ Form language balances razor-sharp Japanese structural joinery with organic Amer
 - **Do** maintain the master paper and ink contrast ratio across all new surfaces.
 - **Do** use hard offset drop shadows (`4px 4px 0`) with zero blur radius for elevated cards.
 - **Do** pair tight-tracked sans display typography with Georgia serif italics for reflective emphasis.
-- **Do** keep monospace metadata strictly at 7px–8px with generous letter-spacing (`0.12em`).
+- **Do** keep monospace metadata at an accessible 8.5px–10px floor with generous letter-spacing (`0.12em`).
 - **Do** rotate signature stamp seals off-axis (-4° to -8°) to preserve the human, hand-pressed character.
 
 ### Don't:
 - **Don't** use diffuse, blurred Gaussian drop shadows or glow effects anywhere in the system.
+- **Don't** introduce decorative pulsing dots, blinking indicators, or ambient gradient halos.
 - **Don't** use pure digital white (#ffffff) or sterile corporate grays (#f3f4f6, #9ca3af) for background canvas.
 - **Don't** introduce generic floating rounded pills (`rounded-full`) for rectangular buttons or cards.
 - **Don't** use arbitrary inline color strings; always reference established CSS variables or design tokens.

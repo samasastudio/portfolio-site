@@ -93,14 +93,16 @@ app/
 - **Typographic Hierarchy**:
   - Headings: Display sans with tight tracking.
   - Emphasis: Georgia serif italics (`em`).
-  - Metadata / Micro-labels: Uppercase monospace (`font-mono text-[7px] tracking-widest`).
+  - Metadata / Micro-labels: Uppercase monospace (`font-mono text-[9px] tracking-widest`).
 - **Named System Invariants**:
   - *The Flash Rarity Rule*: Cinnabar and Ochre Gold are reserved for focal accents ($\le 10\%$ of surface).
   - *The No-Faux-White Rule*: Pure digital white (`#ffffff`) is banned; surfaces use warm paper stock.
   - *The Indelible Offset Rule*: Zero Gaussian blur shadows; elevation is physical hard offsets (`4px 4px 0`, `5px 5px 0`).
-  - *The Labyrinth & Linotype Rule*: Micro-labels must not exceed 8px.
+  - *The Accessible Linotype Rule*: Monospace micro-labels must maintain an accessible floor of 8.5px–10px; sub-8px text is banned. Archival density is achieved through uppercase tracking (`0.12em`) and muted ink opacity (`opacity-60`), not sub-readable font sizes.
   - *The Soul in Italics Rule*: Reflective emphasis lives in Georgia serif italics.
   - *The Tactile Grain Rule*: Preserve the ambient fractal noise overlay across viewports.
+  - *The Zero-Pulsing-Dot Rule*: Banned cosmetic pulsing dots (`@keyframes pulse`) and ambient gradient halos (`radial-halo`). Status beacons must be steady, static marks; only genuinely streaming data channels may animate.
+  - *The Complete Slop Sweep Rule*: When auditing or eliminating AI slop patterns (per `impeccable.style/slop`), sweep all shell zones (TopBar, NavRail, Stage, Footer) without rationalizing exceptions for cosmetic animations.
 - **Anti-AI Slop**: No generic purple-on-white gradients, unstyled system fonts, or cookie-cutter templates. Preserve tactile noise textures, subtle drop shadows, and editorial framing.
 
 ---
