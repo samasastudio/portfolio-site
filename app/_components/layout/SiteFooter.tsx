@@ -7,7 +7,12 @@ export function SiteFooter() {
         © {siteConfig.copyrightYear} / {siteConfig.copyrightHolder}
       </span>
       <span className="ticker">{siteConfig.tickerText}</span>
-      <a href={siteConfig.linkedinUrl} target="_blank" rel="noreferrer">
+      <a
+        href={siteConfig.linkedinUrl}
+        target="_blank"
+        rel="noreferrer"
+        aria-label="LinkedIn profile (opens in new window)"
+      >
         LI ↗
       </a>
     </footer>
