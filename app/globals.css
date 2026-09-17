@@ -89,7 +89,7 @@ em { font-family: Georgia, "Times New Roman", serif; font-weight: 400; }
 .hero-copy h1 { font-size: clamp(48px, 5.5vw, 84px); line-height: .95; letter-spacing: -.05em; margin: 0 0 20px; font-weight: 650; }
 .hero-copy h1 em { color: var(--rust); font-style: italic; }
 .hero-deck { width: 100%; max-width: 520px; font-size: 14.5px; line-height: 1.65; margin: 0 0 28px; color: rgba(25, 27, 24, .88); }
-.hero-index { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; width: 100%; border-top: 1px solid var(--line); padding-top: 16px; margin-top: auto; }
+.hero-index { display: grid; grid-template-columns: 1.35fr 1fr; gap: 18px; width: 100%; border-top: 1px solid var(--line); padding-top: 16px; margin-top: auto; }
 .hero-index-item { display: flex; flex-direction: column; gap: 4px; }
 .hero-index-item small { font: 8.5px var(--font-mono); letter-spacing: .12em; color: var(--rust); font-weight: 600; text-transform: uppercase; }
 .hero-index-item span { font: 9.5px/1.35 var(--font-mono); letter-spacing: .04em; color: rgba(25, 27, 24, .75); }
@@ -105,8 +105,8 @@ em { font-family: Georgia, "Times New Roman", serif; font-weight: 400; }
 .round-link:hover { transform: rotate(2deg) translate(2px,-3px); background: var(--indigo); box-shadow: 5px 5px 0 var(--ink); }
 .round-link b { align-self: flex-end; font-size: 18px; font-weight: 400; }
 
-.hero-object { display: grid; grid-template-columns: 1fr 58px; grid-template-rows: repeat(3, 1fr); gap: 6px; min-width: 0; background: var(--cedar); padding: 8px; border-radius: 2px; box-shadow: inset 0 0 0 1px rgba(25,27,24,.18); }
-.brand-field { grid-row: 1 / 4; position: relative; overflow: hidden; background: var(--paper-light); display: grid; place-items: center; border: 1px solid rgba(25,27,24,.12); }
+.hero-object { display: grid; grid-template-columns: 1fr 48px; gap: 6px; min-width: 0; background: var(--cedar); padding: 8px; border-radius: 2px; box-shadow: inset 0 0 0 1px rgba(25,27,24,.18); }
+.brand-field { position: relative; overflow: hidden; background: var(--paper-light); display: grid; place-items: center; border: 1px solid rgba(25,27,24,.12); }
 .brand-field::before, .brand-field::after { content: "✦"; position: absolute; color: var(--rust); font-size: 15px; }
 .brand-field::before { left: 20px; top: 18px; }
 .brand-field::after { right: 20px; bottom: 18px; }
@@ -114,13 +114,13 @@ em { font-family: Georgia, "Times New Roman", serif; font-weight: 400; }
 .brand-caption { position: absolute; z-index: 2; font: 8.5px/1.5 var(--font-mono); letter-spacing: .11em; color: var(--indigo); }
 .brand-caption-top { top: 20px; right: 20px; text-align: right; }
 .brand-caption-bottom { bottom: 20px; left: 20px; }
-.shelf { color: var(--paper-light); display: flex; flex-direction: column; align-items: center; padding: 10px 6px; overflow: hidden; border: 1px solid rgba(250,245,234,.24); border-radius: 2px; }
-.shelf span, .shelf i { font: 8.5px var(--font-mono); letter-spacing: .08em; font-style: normal; }
-.shelf b { writing-mode: vertical-rl; margin: auto; font: 600 9.5px var(--font-mono); letter-spacing: .14em; }
-.shelf i { writing-mode: vertical-rl; opacity: .7; }
-.shelf-one { background: var(--indigo); }
-.shelf-two { background: var(--rust); }
-.shelf-three { background: var(--moss); }
+.shelf-spine {
+  color: var(--paper-light); display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+  padding: 18px 6px; overflow: hidden; background: var(--indigo); border: 1px solid rgba(250,245,234,.24); border-radius: 2px;
+}
+.shelf-spine span, .shelf-spine i { font: 8.5px var(--font-mono); letter-spacing: .12em; font-style: normal; color: var(--yellow); }
+.shelf-spine b { writing-mode: vertical-rl; margin: auto; font: 600 10px var(--font-mono); letter-spacing: .16em; }
+.shelf-spine i { writing-mode: vertical-rl; opacity: .8; color: var(--paper-light); }
 
 /* Work — a card catalogue */
 .work-grid { display: grid; grid-template-columns: minmax(260px, .8fr) minmax(290px, .95fr) 1.5fr; height: 100%; padding: 12px; gap: 12px; }
@@ -163,7 +163,7 @@ em { font-family: Georgia, "Times New Roman", serif; font-weight: 400; }
 .cap-top { display: flex; justify-content: space-between; align-items: center; padding: 12px 18px; border-bottom: 1px solid var(--line); background: rgba(242,234,220,.5); }
 .cap-top small { font: 8.5px var(--font-mono); letter-spacing: .12em; text-transform: uppercase; color: rgba(25,27,24,.6); }
 .cap-stamp { font: 650 8.5px var(--font-mono); color: var(--rust); letter-spacing: .1em; display: flex; align-items: center; gap: 6px; }
-.cap-columns { display: grid; grid-template-columns: repeat(3, 1fr); flex: 1; }
+.cap-columns { display: grid; grid-template-columns: repeat(2, 1fr); flex: 1; }
 .cap { padding: 20px 18px; border-right: 1px solid var(--soft-line); display: flex; flex-direction: column; gap: 10px; justify-content: space-between; }
 .cap:last-child { border-right: 0; }
 .cap-meta { display: flex; justify-content: space-between; align-items: center; }

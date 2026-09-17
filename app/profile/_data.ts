@@ -9,8 +9,8 @@ export interface Capability {
 export const profileData = {
   intro: {
     subtitle: "Profile / background & practice",
-    headingLines: ["Systems engineer.", "Frontend architect."],
-    emphasis: "Technical lead.",
+    headingLines: ["Frontend architect."],
+    emphasis: "Systems engineer.",
   },
   manifesto: {
     badge: "READING ROOM / 03",
@@ -22,24 +22,17 @@ export const profileData = {
   capabilities: [
     {
       n: "01",
-      category: "ARCHITECTURE",
+      category: "ARCHITECTURE & PLATFORM",
       strong: ["Systems &", "Interface"],
-      span: "Component design, type-safe APIs, and design tokens.",
+      span: "Component design, type-safe API boundaries, design systems, and dense financial data workflows.",
       className: "cap cap-a",
     },
     {
       n: "02",
-      category: "DELIVERY",
-      strong: ["Full-Stack", "Reliability"],
-      span: "Dense transactional logic, Node services, and resilient data.",
-      className: "cap cap-b",
-    },
-    {
-      n: "03",
-      category: "PRACTICE",
+      category: "PRACTICE & ENABLEMENT",
       strong: ["DX & Team", "Leverage"],
-      span: "Engineering patterns, developer tooling, and agentic workflows.",
-      className: "cap cap-c",
+      span: "Engineering patterns, developer tooling, steering standards, and agentic workflows.",
+      className: "cap cap-b",
     },
   ] as Capability[],
   stampBadge: {
@@ -50,9 +43,8 @@ export const profileData = {
   workingSet: {
     label: "Working set / technical disciplines",
     groups: [
-      { discipline: "FRONTEND", stack: "React · TypeScript · Next.js · Design Systems · Vite" },
-      { discipline: "DATA & RUNTIME", stack: "Node.js · MSSQL · Drizzle · Zustand · TanStack" },
-      { discipline: "DX & AGENTS", stack: "Agentic Steering · CI/CD · Cloudflare · AWS" },
+      { discipline: "CORE STACK & UI", stack: "React · TypeScript · Next.js · Design Systems · Vite · Tailwind" },
+      { discipline: "PLATFORMS & DX", stack: "Node.js · MSSQL · Drizzle · Agentic Workflows · CI/CD · Cloudflare · AWS" },
     ],
   },
 } as const;

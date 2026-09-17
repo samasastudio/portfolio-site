@@ -6,24 +6,19 @@ export function HeroCopy() {
     <section className="hero-copy">
       <h1>
         Complex systems.<br />
-        <em>Clear interfaces.</em><br />
-        Grounded craft.
+        <em>Grounded craft.</em>
       </h1>
       <p className="hero-deck">
         Frontend-focused full-stack engineer in Austin, Texas. Turning dense domain rules into legible architecture, reliable systems, and software teams actually enjoy maintaining.
       </p>
       <div className="hero-index">
         <div className="hero-index-item">
-          <small>ARCHITECTURE</small>
-          <span>React · TypeScript · RSC</span>
+          <small>FOCUS</small>
+          <span>Frontend architecture & full-stack data workflows</span>
         </div>
         <div className="hero-index-item">
-          <small>DELIVERY</small>
-          <span>Full-Stack · Node · SQL</span>
-        </div>
-        <div className="hero-index-item">
-          <small>PRACTICE</small>
-          <span>DX · Design Systems · AI</span>
+          <small>ORIGIN</small>
+          <span>Austin, Texas · Available for select engagements</span>
         </div>
       </div>
       <RoundLink href="/work">

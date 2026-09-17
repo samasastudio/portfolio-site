@@ -4,7 +4,7 @@ export function CapabilityMap() {
   const { capabilities, stampBadge } = profileData;
 
   return (
-    <div className="capability-map" aria-label="Three-part capability map">
+    <div className="capability-map" aria-label="Core capability architecture">
       <div className="cap-top">
         <small>ARCHITECTURAL DISCIPLINES</small>
         <div className="cap-stamp">

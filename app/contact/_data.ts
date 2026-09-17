@@ -20,8 +20,7 @@ export const contactData = {
     url: siteConfig.linkedinUrl,
   },
   fineprint: [
-    "BASED IN AUSTIN, TEXAS · UTC-5",
-    "REMOTE & HYBRID COLLABORATION",
-    "DIRECT RESPONSE WITHIN 48 HOURS",
+    "BASED IN AUSTIN, TEXAS · US CENTRAL (UTC-5)",
+    "DIRECT INQUIRIES · 48-HOUR RESPONSE COMMITMENT",
   ],
 } as const;

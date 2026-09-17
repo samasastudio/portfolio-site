@@ -32,7 +32,7 @@ test("renders development preview metadata", async () => {
   const html = await response.text();
   assert.match(html, developmentPreviewMeta);
   assert.match(html, /Complex systems/);
-  assert.match(html, /Clear interfaces/);
+  assert.match(html, /Grounded craft/);
 });
 
 test("renders /work route with project archive", async () => {
@@ -83,7 +83,8 @@ test("renders /profile route with manifesto and capabilities", async () => {
 
   assert.equal(response.status, 200);
   const html = await response.text();
-  assert.match(html, /Technical lead/);
+  assert.match(html, /Frontend architect/);
+  assert.match(html, /Systems engineer/);
   assert.match(html, /SelectQuote/);
   assert.match(html, /Working set/);
 });
