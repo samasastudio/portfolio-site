@@ -1,5 +1,6 @@
 export interface Capability {
   n: string;
+  category: string;
   strong: string[];
   span: string;
   className: string;
@@ -7,44 +8,51 @@ export interface Capability {
 
 export const profileData = {
   intro: {
-    subtitle: "Profile / the short version",
-    headingLines: ["Engineer.", "Translator."],
-    emphasis: "Wayfinder.",
+    subtitle: "Profile / background & practice",
+    headingLines: ["Systems engineer.", "Frontend architect."],
+    emphasis: "Technical lead.",
   },
   manifesto: {
     badge: "READING ROOM / 03",
     paragraphs: [
-      "I’m a frontend-focused full-stack engineer who likes the difficult middle: where product intent, technical systems, and the people building them need to agree.",
-      "At SelectQuote, I’ve built financial software across React, TypeScript, Node, MSSQL, and AWS—and served as a frontend SME helping teams make better, more durable decisions.",
+      "I’m a frontend-focused full-stack engineer who thrives in the difficult middle: where product intent, technical systems, and the teams building them must align.",
+      "At SelectQuote, I’ve architected financial platforms across React, TypeScript, Node, MSSQL, and AWS—serving as a frontend SME helping engineering teams build durable, maintainable software.",
     ],
   },
   capabilities: [
     {
       n: "01",
-      strong: ["Make it", "clear"],
-      span: "Interface & systems design",
+      category: "ARCHITECTURE",
+      strong: ["Systems &", "Interface"],
+      span: "Component design, type-safe APIs, and design tokens.",
       className: "cap cap-a",
     },
     {
       n: "02",
-      strong: ["Make it", "real"],
-      span: "Full-stack delivery",
+      category: "DELIVERY",
+      strong: ["Full-Stack", "Reliability"],
+      span: "Dense transactional logic, Node services, and resilient data.",
       className: "cap cap-b",
     },
     {
       n: "03",
-      strong: ["Make it", "repeatable"],
-      span: "DX & team enablement",
+      category: "PRACTICE",
+      strong: ["DX & Team", "Leverage"],
+      span: "Engineering patterns, developer tooling, and agentic workflows.",
       className: "cap cap-c",
     },
   ] as Capability[],
-  centerBadge: {
+  stampBadge: {
     symbol: "✦",
     name: "SAM J.",
+    location: "AUSTIN",
   },
   workingSet: {
-    label: "Working set",
-    tools:
-      "React · TypeScript · JavaScript · Node.js · SQL · Zustand · TanStack Query · AWS · Design systems · AI-assisted development",
+    label: "Working set / technical disciplines",
+    groups: [
+      { discipline: "FRONTEND", stack: "React · TypeScript · Next.js · Design Systems · Vite" },
+      { discipline: "DATA & RUNTIME", stack: "Node.js · MSSQL · Drizzle · Zustand · TanStack" },
+      { discipline: "DX & AGENTS", stack: "Agentic Steering · CI/CD · Cloudflare · AWS" },
+    ],
   },
 } as const;

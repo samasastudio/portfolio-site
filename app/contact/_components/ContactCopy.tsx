@@ -11,9 +11,11 @@ export function ContactCopy() {
         </a>
       </div>
       <div className="fineprint">
-        {contactData.fineprint[0]}
-        <br />
-        {contactData.fineprint[1]}
+        {contactData.fineprint.map((line, idx) => (
+          <span key={idx} className="fineprint-line">
+            {line}
+          </span>
+        ))}
       </div>
     </>
   );

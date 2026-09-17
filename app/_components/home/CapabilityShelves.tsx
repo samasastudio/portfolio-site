@@ -3,18 +3,18 @@ export function CapabilityShelves() {
     <>
       <div className="shelf shelf-one">
         <span>01</span>
-        <b>INTERFACE</b>
-        <i>MAKE IT LEGIBLE</i>
+        <b>SYSTEMS</b>
+        <i>ARCHITECTURE</i>
       </div>
       <div className="shelf shelf-two">
         <span>02</span>
-        <b>SYSTEMS</b>
-        <i>MAKE IT DURABLE</i>
+        <b>DELIVERY</b>
+        <i>FULL-STACK</i>
       </div>
       <div className="shelf shelf-three">
         <span>03</span>
-        <b>TEAMS</b>
-        <i>MAKE IT SHARED</i>
+        <b>PRACTICE</b>
+        <i>ENABLEMENT</i>
       </div>
     </>
   );

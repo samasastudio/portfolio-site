@@ -77,21 +77,25 @@ export function ProjectArchive({ items, subtitle, note }: ProjectArchiveProps) {
         tabIndex={0}
       >
         <div className="card-top">
-          <span>{project.tag}</span>
-          <span>{project.n} / {items.length < 10 ? `0${items.length}` : items.length}</span>
+          <span className="card-tag">{project.tag}</span>
+          <span className="card-spec">SPEC {project.n} / 0{items.length}</span>
         </div>
-        <div className="card-stamp">
-          SAM<br />
-          JOHNSON<br />
-          AUSTIN
+        <div className="card-meta">
+          <span className="card-stack">{project.stack}</span>
         </div>
-        <h2>{project.title}</h2>
-        <p>{project.body}</p>
-        <div className="result">
-          <small>Operating principle</small>
-          <strong>{project.result}</strong>
+        <h2 className="card-heading">{project.title}</h2>
+        <p className="card-body">{project.body}</p>
+        <div className="card-footer">
+          <div className="result">
+            <small>OPERATING PRINCIPLE</small>
+            <strong>{project.result}</strong>
+          </div>
+          <div className="card-stamp">
+            SAM<br />
+            JOHNSON<br />
+            AUSTIN
+          </div>
         </div>
-        <div className="stack">{project.stack}</div>
       </article>
     </section>
   );
