@@ -33,7 +33,7 @@ The production build scripts package the application into a Cloudflare Workers S
 npm test
 
 # Strict TypeScript verification across all modules
-npx tsc --noEmit
+npm run typecheck
 
 # Recheck packaged Sites manifest and ESM default export
 npm run validate:artifact
@@ -41,6 +41,15 @@ npm run validate:artifact
 # Generate Drizzle ORM migrations from schema definitions
 npm run db:generate
 ```
+
+## Git Hooks & Commit Standards
+
+This repository uses **Husky** and **Commitlint** to automatically enforce code quality and commit history standards:
+
+- **`pre-commit`**: Runs `npm run typecheck` (`tsc --noEmit`) and `npm test` (full `vinext` production build + 9 unit/integration test suites) before any staged changes can be committed.
+- **`commit-msg`**: Enforces the **Conventional Commits** specification (`feat:`, `fix:`, `docs:`, `chore:`, `refactor:`, `test:`, `perf:`). Non-conforming messages are rejected.
+- **Husky Initialization**: Runs automatically on `npm install` via `"prepare": "husky"`.
+
 
 ## Key Directory Map
 
