@@ -150,6 +150,8 @@ The typographic hierarchy combines three distinct voices: an authoritative tight
 
 **The Soul in Italics Rule.** Emotional resonance, philosophical stances, and visual emphasis belong in Georgia serif italics (`em`), creating a tactile dialogue with the rigid sans frame.
 
+**The Singular Triad Rule.** Triad structures (three-column maps, three-line headlines, three-part slogan lists) are strictly banned outside the **Three Systems** archive. Reserving the number three exclusively for the core systems preserves its intentional architectural weight.
+
 ## Layout
 
 The spatial model is inspired by architectural partition screens (shōji) and physical library shelving: full-viewport master grids subdivided by hairline ink rules.
@@ -181,6 +183,8 @@ Surfaces live on physical paper sheets and cardstock planes. Elevation is commun
 
 **The Tactile Grain Rule.** The entire interface carries an ambient fractal noise overlay (`mix-blend-mode: multiply`, opacity 0.23) fixed over the viewport, grounding digital pixels into raw physical paper fibers.
 
+**The Grounded Seam Rule.** Elements must never clip across container borders or float over legible text. Stamps, badges, and circular links live cleanly inside their parent grid cells with zero negative boundary overflow.
+
 ## Shapes
 
 Form language balances razor-sharp Japanese structural joinery with organic American traditional tattoo flash stamps.
@@ -210,8 +214,8 @@ Form language balances razor-sharp Japanese structural joinery with organic Amer
 - **Interior Framing:** Hairline border inset 11px (`rgba(250,245,234,0.22)`).
 - **Embellishments:** Gold star glyph (`✦`) in top right, circular rotated stamp seal in bottom right.
 
-### Vertical Capability Shelves
-- **Structure:** Monolithic vertical color blocks (Deep Indigo, Vermilion Cinnabar, Sumi Pine Moss) with vertical writing mode (`writing-mode: vertical-rl`) and uppercase monospace tracking.
+### Architectural Ledger Spine
+- **Structure:** Monolithic vertical Deep Indigo block with vertical writing mode (`writing-mode: vertical-rl`), metallic ochre glyphs, and uppercase monospace tracking.
 
 ## Do's and Don'ts
 
@@ -223,6 +227,9 @@ Form language balances razor-sharp Japanese structural joinery with organic Amer
 - **Do** rotate signature stamp seals off-axis (-4° to -8°) to preserve the human, hand-pressed character.
 
 ### Don't:
+- **Don't** introduce triads (3 columns, 3 shelf slices, 3-line headlines) outside the Three Systems archive.
+- **Don't** use negative positioning offsets that poke outside container boundaries or occlude underlying text.
+- **Don't** place kickers or eyebrow labels above headings.
 - **Don't** use diffuse, blurred Gaussian drop shadows or glow effects anywhere in the system.
 - **Don't** introduce decorative pulsing dots, blinking indicators, or ambient gradient halos.
 - **Don't** use pure digital white (#ffffff) or sterile corporate grays (#f3f4f6, #9ca3af) for background canvas.

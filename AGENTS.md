@@ -103,6 +103,9 @@ app/
   - *The Tactile Grain Rule*: Preserve the ambient fractal noise overlay across viewports.
   - *The Zero-Pulsing-Dot Rule*: Banned cosmetic pulsing dots (`@keyframes pulse`) and ambient gradient halos (`radial-halo`). Status beacons must be steady, static marks; only genuinely streaming data channels may animate.
   - *The Complete Slop Sweep Rule*: When auditing or eliminating AI slop patterns (per `impeccable.style/slop`), sweep all shell zones (TopBar, NavRail, Stage, Footer) without rationalizing exceptions for cosmetic animations.
+  - *The Singular Triad Rule*: The "Rule of Three" (3-line headings, 3-column grids, 3-part lists, 3-part slogans) is an over-used AI template trope. In this project, the triad structure is strictly and exclusively reserved for the **Three Systems** (the Work archive and upcoming gateway consoles). All other surfaces must use 2-part, asymmetrical, or fluid compositions.
+  - *The Grounded Seam Rule*: Banned negative absolute offsets that protrude across container boundary seams (e.g. `right: -36px`) and centered floating badges that occlude content text. All stamp seals, badges, and action buttons must be structurally grounded and contained within their respective panels.
+  - *The Authentic Voice Rule*: Banned kickers/eyebrows above headings, slogan-generator buzzwords ("Wayfinder", "Wild ideas"), repetitive "Make it [adj]" formulas, and folksy greetings ("Pull up a chair"). Headings speak directly with authentic systems-engineering clarity.
 - **Anti-AI Slop**: No generic purple-on-white gradients, unstyled system fonts, or cookie-cutter templates. Preserve tactile noise textures, subtle drop shadows, and editorial framing.
 
 ---
