@@ -1,21 +1,27 @@
 import type { SystemGatewayContract } from "../_types/system";
 
+const LEGACY_ID_MAP: Record<string, string> = {
+  "atx-scraper": "gridlock-scraper",
+  "atx-graphical-atlas": "gridlock-graphical-atlas",
+  "atx-generative-console": "gridlock-generative-console",
+};
+
 /**
  * Metadata and status contracts for the 3 Compute Atlas gateway surfaces.
  */
 export const gatewaySystems: readonly SystemGatewayContract[] = [
   {
-    id: "atx-scraper",
+    id: "gridlock-scraper",
     slug: "scraper",
-    name: "ATX Scraper — Compute Infrastructure Ingestion Engine",
-    shortName: "ATX Scraper",
+    name: "Gridlock Scraper — Compute Infrastructure Ingestion Engine",
+    shortName: "Gridlock Scraper",
     category: "Data Ingestion & Extraction Engine",
     summary:
       "Deterministic public records extraction across TDLR TABS, Austin AB+C, municipal agendas, TCEQ permits, and ERCOT queues with out-of-band Gemini Flash self-healing repair and sandbox replay gates.",
     status: "development",
     runtime: "Node.js 22 / Cloudflare Worker",
     endpoint: "/systems/scraper",
-    specPath: "docs/specs/atx-scraper.md",
+    specPath: "docs/specs/gridlock-scraper.md",
     adrPath: "docs/adr/0002-scraper-out-of-band-self-healing.md",
     technologies: [
       "TypeScript",
@@ -42,20 +48,20 @@ export const gatewaySystems: readonly SystemGatewayContract[] = [
       "Zero autonomous writes to canonical observation store",
       "100% fixture replay pass before patch promotion",
     ],
-    repositoryUri: "c:/Users/Owner/projects/atx-scraper",
+    repositoryUri: "c:/Users/Owner/projects/gridlock-scraper",
   },
   {
-    id: "atx-graphical-atlas",
+    id: "gridlock-graphical-atlas",
     slug: "graphical-atlas",
-    name: "ATX Graphical Atlas — Temporal Technical Atlas",
-    shortName: "ATX Graphical Atlas",
+    name: "Gridlock Graphical Atlas — Temporal Technical Atlas",
+    shortName: "Gridlock Graphical Atlas",
     category: "Geospatial Cartography & Temporal Visualization",
     summary:
       "Living technical cartography coupling deterministic GIS vector geometry (TNRIS parcels, transmission corridors, aquifers) with stateful semantic visual synthesis across Central Texas over time.",
     status: "development",
     runtime: "Next.js 16 RSC / MapLibre GL / Canvas",
     endpoint: "/systems/graphical-atlas",
-    specPath: "docs/specs/atx-graphical-atlas.md",
+    specPath: "docs/specs/gridlock-graphical-atlas.md",
     adrPath: "docs/adr/0001-graphical-atlas-visual-architecture.md",
     technologies: [
       "MapLibre GL",
@@ -79,20 +85,20 @@ export const gatewaySystems: readonly SystemGatewayContract[] = [
       "Full historical auditability via StateProjector",
       "Sub-50ms interaction latency with zero network roundtrips",
     ],
-    repositoryUri: "c:/Users/Owner/projects/atx-graphical-atlas",
+    repositoryUri: "c:/Users/Owner/projects/gridlock-graphical-atlas",
   },
   {
-    id: "atx-generative-console",
+    id: "gridlock-generative-console",
     slug: "generative-console",
-    name: "ATX Generative Console — Investigative Analytical Workspace",
-    shortName: "ATX Generative Console",
+    name: "Gridlock Generative Console — Investigative Analytical Workspace",
+    shortName: "Gridlock Generative Console",
     category: "Generative UI & Investigative Workspace",
     summary:
       "Dynamic investigative workspace driven by natural-language inquiry, translating analyst intent into strongly-typed UI AST layouts that mutate in-place and ground all findings in immutable public records evidence.",
     status: "development",
     runtime: "Next.js 16 / React 19 / Cloudflare Worker",
     endpoint: "/systems/generative-ui",
-    specPath: "docs/specs/atx-generative-console.md",
+    specPath: "docs/specs/gridlock-generative-console.md",
     adrPath: "docs/adr/0003-generative-ui-component-palette.md",
     technologies: [
       "React 19 RSC",
@@ -116,7 +122,7 @@ export const gatewaySystems: readonly SystemGatewayContract[] = [
       "Strict evidence-first provenance for all claims",
       "Curated palette without arbitrary CSS generation",
     ],
-    repositoryUri: "c:/Users/Owner/projects/atx-generative-console",
+    repositoryUri: "c:/Users/Owner/projects/gridlock-generative-console",
   },
 ] as const;
 
@@ -124,7 +130,8 @@ export function getSystemById(id: string): SystemGatewayContract | undefined {
   if (!id || typeof id !== "string") return undefined;
   const targetId = id.trim().toLowerCase();
   if (!targetId) return undefined;
-  return gatewaySystems.find((system) => system.id.toLowerCase() === targetId);
+  const resolvedId = LEGACY_ID_MAP[targetId] ?? targetId;
+  return gatewaySystems.find((system) => system.id.toLowerCase() === resolvedId);
 }
 
 export function getSystemBySlug(slug: string): SystemGatewayContract | undefined {
@@ -143,6 +150,9 @@ export function getSystemBySlug(slug: string): SystemGatewayContract | undefined
 
   if (!normalized) return undefined;
 
+  const mappedNormalized = LEGACY_ID_MAP[normalized] ?? normalized;
+  const mappedCleanPath = LEGACY_ID_MAP[cleanPath] ?? cleanPath;
+
   return gatewaySystems.find((system) => {
     const sysSlug = system.slug.toLowerCase();
     const sysId = system.id.toLowerCase();
@@ -156,8 +166,14 @@ export function getSystemBySlug(slug: string): SystemGatewayContract | undefined
       sysSlug === cleanPath ||
       sysId === normalized ||
       sysId === cleanPath ||
+      sysId === mappedNormalized ||
+      sysId === mappedCleanPath ||
       sysEndpoint === cleanPath ||
-      sysEndpointNormalized === normalized
+      sysEndpointNormalized === normalized ||
+      // Support common short aliases
+      (sysId === "gridlock-graphical-atlas" && (normalized === "gridlock-atlas" || cleanPath === "gridlock-atlas")) ||
+      (sysId === "gridlock-generative-console" &&
+        (normalized === "gridlock-console" || cleanPath === "gridlock-console" || normalized === "generative-ui"))
     );
   });
 }

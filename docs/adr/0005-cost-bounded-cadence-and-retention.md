@@ -27,7 +27,7 @@ Adopt a **Cadence-Bounded Ingestion Policy and Long-Term Provenance Retention**:
 4. **Cost & Token Bounds**:
    - Routine extraction: 100% deterministic (zero LLM token spend).
    - Repair agent: Invocations strictly bounded to invariant failure events; maximum 3 automated repair iterations per failure before flagging for human operator review.
-   - Investigation planner: Invoked exclusively on user natural-language queries in `atx-generative-console`.
+   - Investigation planner: Invoked exclusively on user natural-language queries in `gridlock-generative-console`.
 
 ## Consequences
 - **Positive**:

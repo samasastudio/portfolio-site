@@ -11,9 +11,9 @@
   - [ADR-0005: Ingestion Cadence & Provenance Retention](file:///c:/Users/Owner/projects/sam-johnson-portfolio/docs/adr/0005-cost-bounded-cadence-and-retention.md) (Civil regulatory sync schedules, permanent SHA-256 artifact storage, bounded repair loops).
   - [ADR-0006: Stateful Semantic Visual Identities](file:///c:/Users/Owner/projects/sam-johnson-portfolio/docs/adr/0006-generative-cinemagraph-video-loops.md) (Technical blueprint aesthetic, persistent visual seeds, lifecycle progression: proposed faint $\to$ operational dense $\to$ withdrawn ghost).
 - [x] **Technical Specifications Updated**:
-  - [docs/specs/atx-scraper.md](file:///c:/Users/Owner/projects/sam-johnson-portfolio/docs/specs/atx-scraper.md): TDLR TABS, Austin AB+C, municipal agendas, TCEQ connectors, diagnostic bundles, repair sandbox, entity resolution.
-  - [docs/specs/atx-graphical-atlas.md](file:///c:/Users/Owner/projects/sam-johnson-portfolio/docs/specs/atx-graphical-atlas.md): Central Texas corridor GIS vector base, MapLibre GL, stateful semantic plates, `STATE` and `DELTA` temporal scrubbers.
-  - [docs/specs/atx-generative-console.md](file:///c:/Users/Owner/projects/sam-johnson-portfolio/docs/specs/atx-generative-console.md): Intent-to-AST pipeline, investigative component palette, in-place workspace mutation, Evidence Viewer, Source Health surface.
+  - [docs/specs/gridlock-scraper.md](file:///c:/Users/Owner/projects/sam-johnson-portfolio/docs/specs/gridlock-scraper.md): TDLR TABS, Austin AB+C, municipal agendas, TCEQ connectors, diagnostic bundles, repair sandbox, entity resolution.
+  - [docs/specs/gridlock-graphical-atlas.md](file:///c:/Users/Owner/projects/sam-johnson-portfolio/docs/specs/gridlock-graphical-atlas.md): Central Texas corridor GIS vector base, MapLibre GL, stateful semantic plates, `STATE` and `DELTA` temporal scrubbers.
+  - [docs/specs/gridlock-generative-console.md](file:///c:/Users/Owner/projects/sam-johnson-portfolio/docs/specs/gridlock-generative-console.md): Intent-to-AST pipeline, investigative component palette, in-place workspace mutation, Evidence Viewer, Source Health surface.
 - [x] **Verified System Integrity**: Verified with `npm test` (all 4 test suites pass, 0 failures).
 
 ---
@@ -39,5 +39,5 @@
 
 ## 5. Immediate Next Steps
 1. Commit working tree changes on `main`.
-2. Run `/to-tickets` to break down implementation tickets across `atx-scraper`, `atx-graphical-atlas`, and `atx-generative-console`.
-3. Scaffold initial connectors in `atx-scraper`.
+2. Run `/to-tickets` to break down implementation tickets across `gridlock-scraper`, `gridlock-graphical-atlas`, and `gridlock-generative-console`.
+3. Scaffold initial connectors in `gridlock-scraper`.

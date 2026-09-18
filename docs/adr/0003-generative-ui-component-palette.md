@@ -1,4 +1,4 @@
-# ADR-0003: Typed UI AST and Investigative Component Grammar in atx-generative-console
+# ADR-0003: Typed UI AST and Investigative Component Grammar in gridlock-generative-console
 
 ## Status
 Accepted

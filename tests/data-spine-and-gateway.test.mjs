@@ -260,45 +260,59 @@ test("SQLite D1 migration initializes all 11 Compute Atlas tables with foreign k
 test("Gateway systems metadata and lookup helpers", () => {
   assert.equal(gatewaySystems.length, 3);
   const ids = gatewaySystems.map((s) => s.id);
-  assert.deepEqual(ids, ["atx-scraper", "atx-graphical-atlas", "atx-generative-console"]);
+  assert.deepEqual(ids, ["gridlock-scraper", "gridlock-graphical-atlas", "gridlock-generative-console"]);
 
-  // Test getSystemById
-  assert.equal(getSystemById("atx-scraper")?.slug, "scraper");
-  assert.equal(getSystemById("atx-graphical-atlas")?.slug, "graphical-atlas");
-  assert.equal(getSystemById("atx-generative-console")?.slug, "generative-console");
+  // Test getSystemById with new canonical IDs
+  assert.equal(getSystemById("gridlock-scraper")?.slug, "scraper");
+  assert.equal(getSystemById("gridlock-graphical-atlas")?.slug, "graphical-atlas");
+  assert.equal(getSystemById("gridlock-generative-console")?.slug, "generative-console");
+
+  // Test getSystemById backward-compatibility with legacy ATX IDs
+  assert.equal(getSystemById("atx-scraper")?.id, "gridlock-scraper");
+  assert.equal(getSystemById("atx-graphical-atlas")?.id, "gridlock-graphical-atlas");
+  assert.equal(getSystemById("atx-generative-console")?.id, "gridlock-generative-console");
   assert.equal(getSystemById("non-existent"), undefined);
   assert.equal(getSystemById(""), undefined);
 
   // Test getSystemBySlug with normalized slugs, route endpoints, and IDs
-  assert.equal(getSystemBySlug("scraper")?.id, "atx-scraper");
-  assert.equal(getSystemBySlug("/systems/scraper")?.id, "atx-scraper");
-  assert.equal(getSystemBySlug("systems/scraper")?.id, "atx-scraper");
-  assert.equal(getSystemBySlug("/scraper")?.id, "atx-scraper");
+  assert.equal(getSystemBySlug("scraper")?.id, "gridlock-scraper");
+  assert.equal(getSystemBySlug("/systems/scraper")?.id, "gridlock-scraper");
+  assert.equal(getSystemBySlug("systems/scraper")?.id, "gridlock-scraper");
+  assert.equal(getSystemBySlug("/scraper")?.id, "gridlock-scraper");
+  assert.equal(getSystemBySlug("gridlock-scraper")?.id, "gridlock-scraper");
 
-  assert.equal(getSystemBySlug("graphical-atlas")?.id, "atx-graphical-atlas");
-  assert.equal(getSystemBySlug("/systems/graphical-atlas")?.id, "atx-graphical-atlas");
-  assert.equal(getSystemBySlug("atx-graphical-atlas")?.id, "atx-graphical-atlas");
+  assert.equal(getSystemBySlug("graphical-atlas")?.id, "gridlock-graphical-atlas");
+  assert.equal(getSystemBySlug("/systems/graphical-atlas")?.id, "gridlock-graphical-atlas");
+  assert.equal(getSystemBySlug("gridlock-graphical-atlas")?.id, "gridlock-graphical-atlas");
+  assert.equal(getSystemBySlug("gridlock-atlas")?.id, "gridlock-graphical-atlas");
 
-  assert.equal(getSystemBySlug("generative-console")?.id, "atx-generative-console");
-  assert.equal(getSystemBySlug("generative-ui")?.id, "atx-generative-console");
-  assert.equal(getSystemBySlug("/systems/generative-ui")?.id, "atx-generative-console");
-  assert.equal(getSystemBySlug("atx-generative-console")?.id, "atx-generative-console");
+  assert.equal(getSystemBySlug("generative-console")?.id, "gridlock-generative-console");
+  assert.equal(getSystemBySlug("generative-ui")?.id, "gridlock-generative-console");
+  assert.equal(getSystemBySlug("/systems/generative-ui")?.id, "gridlock-generative-console");
+  assert.equal(getSystemBySlug("gridlock-generative-console")?.id, "gridlock-generative-console");
+  assert.equal(getSystemBySlug("gridlock-console")?.id, "gridlock-generative-console");
+
+  // Legacy ATX slug compatibility
+  assert.equal(getSystemBySlug("atx-scraper")?.id, "gridlock-scraper");
+  assert.equal(getSystemBySlug("atx-graphical-atlas")?.id, "gridlock-graphical-atlas");
+  assert.equal(getSystemBySlug("atx-generative-console")?.id, "gridlock-generative-console");
 
   // Edge case testing: trailing slashes, surrounding whitespace, case insensitivity
-  assert.equal(getSystemBySlug("/systems/scraper/")?.id, "atx-scraper");
-  assert.equal(getSystemBySlug("scraper/")?.id, "atx-scraper");
-  assert.equal(getSystemBySlug("  scraper  ")?.id, "atx-scraper");
-  assert.equal(getSystemBySlug("ATX-SCRAPER")?.id, "atx-scraper");
-  assert.equal(getSystemBySlug("Scraper")?.id, "atx-scraper");
-  assert.equal(getSystemBySlug("/systems/generative-ui/")?.id, "atx-generative-console");
-  assert.equal(getSystemBySlug("/systems/graphical-atlas/")?.id, "atx-graphical-atlas");
+  assert.equal(getSystemBySlug("/systems/scraper/")?.id, "gridlock-scraper");
+  assert.equal(getSystemBySlug("scraper/")?.id, "gridlock-scraper");
+  assert.equal(getSystemBySlug("  scraper  ")?.id, "gridlock-scraper");
+  assert.equal(getSystemBySlug("GRIDLOCK-SCRAPER")?.id, "gridlock-scraper");
+  assert.equal(getSystemBySlug("Scraper")?.id, "gridlock-scraper");
+  assert.equal(getSystemBySlug("/systems/generative-ui/")?.id, "gridlock-generative-console");
+  assert.equal(getSystemBySlug("/systems/graphical-atlas/")?.id, "gridlock-graphical-atlas");
   assert.equal(getSystemBySlug("/systems"), undefined);
   assert.equal(getSystemBySlug("/systems/"), undefined);
   assert.equal(getSystemBySlug("/"), undefined);
   assert.equal(getSystemBySlug("   "), undefined);
 
+  assert.equal(getSystemById("  gridlock-scraper  ")?.slug, "scraper");
+  assert.equal(getSystemById("GRIDLOCK-SCRAPER")?.slug, "scraper");
   assert.equal(getSystemById("  atx-scraper  ")?.slug, "scraper");
-  assert.equal(getSystemById("ATX-SCRAPER")?.slug, "scraper");
   assert.equal(getSystemById("  "), undefined);
 
   assert.equal(getSystemBySlug("unknown"), undefined);

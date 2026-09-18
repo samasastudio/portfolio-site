@@ -1,4 +1,4 @@
-# ADR-0002: Deterministic Connectors, Sandbox Replay Gates, and Out-of-Band Repair in atx-scraper
+# ADR-0002: Deterministic Connectors, Sandbox Replay Gates, and Out-of-Band Repair in gridlock-scraper
 
 ## Status
 Accepted

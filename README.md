@@ -6,21 +6,21 @@ A high-performance portfolio, systems gateway, and temporal intelligence engine 
 
 The portfolio serves as the primary frontend gateway and temporal observation surface for Compute Atlas across three specialized systems:
 
-1. **`atx-scraper` (Deterministic Ingestion & Self-Healing Repair)**:
+1. **`gridlock-scraper` (Deterministic Ingestion & Self-Healing Repair)**:
    - Resilient public records ingestion across TDLR TABS (state construction filings), City of Austin Open Data & AB+C, municipal agenda packets (Taylor, Round Rock), TCEQ (environmental/air/water permits), and ERCOT queues.
    - Deterministic fast path with out-of-band Gemini 2.5 Flash repair agent triggered only on invariant breach.
    - Gated sandbox replay testing against historical fixtures before selector promotion.
-   - Spec: `docs/specs/atx-scraper.md` | ADR: `docs/adr/0002-scraper-out-of-band-self-healing.md`.
+   - Spec: `docs/specs/gridlock-scraper.md` | ADR: `docs/adr/0002-scraper-out-of-band-self-healing.md`.
 
-2. **`atx-graphical-atlas` (Temporal Technical Atlas)**:
+2. **`gridlock-graphical-atlas` (Temporal Technical Atlas)**:
    - Living technical cartography coupling a deterministic GIS vector base (TNRIS parcels, ERCOT high-voltage lines, TWDB watersheds) with stateful semantic visual synthesis.
    - Dual-mode temporal scrubber supporting historical state reconstruction (`STATE` mode at date $T$) and differential impact analysis (`DELTA` mode between $T_1$ and $T_2$).
-   - Spec: `docs/specs/atx-graphical-atlas.md` | ADR: `docs/adr/0001-graphical-atlas-visual-architecture.md`.
+   - Spec: `docs/specs/gridlock-graphical-atlas.md` | ADR: `docs/adr/0001-graphical-atlas-visual-architecture.md`.
 
-3. **`atx-generative-console` (Investigative Analytical Workspace)**:
+3. **`gridlock-generative-console` (Investigative Analytical Workspace)**:
    - Dynamic investigative workspace translating natural-language queries into strongly-typed UI AST layouts composed from a curated component palette (`MapView`, `Timeline`, `EntityHeader`, `EvidenceViewer`, `Comparison`, `RelationshipGraph`).
    - In-place workspace transformation with strict provenance tracing to immutable source documents.
-   - Spec: `docs/specs/atx-generative-console.md` | ADR: `docs/adr/0003-generative-ui-component-palette.md`.
+   - Spec: `docs/specs/gridlock-generative-console.md` | ADR: `docs/adr/0003-generative-ui-component-palette.md`.
 
 ## Relational Data Spine (Drizzle ORM)
 

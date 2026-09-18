@@ -9,21 +9,21 @@ Editorial Thesis: AI is not immaterial. It is becoming physical infrastructure (
 
 ## The Three Systems & Boundary Model
 
-1. **`atx-scraper` (Deterministic Ingestion & Self-Healing Repair)**:
+1. **`gridlock-scraper` (Deterministic Ingestion & Self-Healing Repair)**:
    - Ingestion across heterogeneous Texas public records: TDLR TABS (state construction registrations), Austin Open Data & AB+C, municipal planning agendas/packets (e.g., Taylor, Round Rock), TCEQ (environmental/air/water permits), ERCOT (large-load interconnections), and TWDB (water context).
    - Deterministic fast path: REST APIs, Cheerio HTML extractors, structured PDF/tabular parsers.
    - Out-of-band LLM repair agent: Powered by Gemini 2.5 Flash. Wakes *only* when deterministic extraction fails, schemas violate invariants, or DOM layouts break.
    - Replay & test gates: Agent proposes connector patches tested in sandboxed replay against cached immutable artifacts before promotion.
    - Source Health surface: Full visibility into connector status, invariant checks, failure telemetry, and audit logs.
 
-2. **`atx-graphical-atlas` (Temporal Technical Atlas)**:
+2. **`gridlock-graphical-atlas` (Temporal Technical Atlas)**:
    - Living technical atlas visualizing the physical compute buildout across Central Texas.
    - Decoupled two-tier rendering model:
      - *Deterministic GIS Base*: Exact parcel boundaries, roads, municipal jurisdictions, power transmission lines, and water basins rendered via vector maps (MapLibre / Canvas / SVG). Zero spatial hallucinations.
      - *Stateful Semantic Visual Layer*: Living technical aesthetic (topographic plate, architectural drawing, utility schematic) generated/conditioned via Google GenAI. Entities carry a stable visual seed evolving with lifecycle state: proposed projects appear faint/diagrammatic; active construction/operational sites resolve into dense structures; withdrawn projects leave visible ghosted traces.
    - Temporal scrubber: Supports `STATE` mode (reconstruct world as understood at date $T$) and `DELTA` mode (highlight changes between $T_1$ and $T_2$).
 
-3. **`atx-generative-console` (Investigative Analytical Workspace)**:
+3. **`gridlock-generative-console` (Investigative Analytical Workspace)**:
    - Dynamic investigative workspace driven by natural-language inquiry.
    - Not a chat transcript. Gemini Flash acts as an intent interpreter and layout planner, emitting a strongly-typed UI AST composed from a curated component palette.
    - Component grammar: `MapView`, `Timeline`, `EntityHeader`, `EvidenceViewer`, `MetricGroup`, `DataTable`, `Comparison`, `RelationshipGraph`, `DocumentViewer`, `SourceDiff`, `MethodologyPanel`, `Alert`.
