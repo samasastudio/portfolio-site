@@ -4,7 +4,7 @@ A high-performance portfolio, systems gateway, and temporal intelligence engine 
 
 ## Architecture & Gateway Model
 
-The portfolio serves as the primary frontend gateway and temporal observation surface for Compute Atlas across three specialized systems:
+The portfolio serves as the primary frontend gateway and temporal observation surface for Compute Atlas across three specialized systems. Each system is maintained in its own dedicated, decoupled Git repository to preserve strict separation of concerns:
 
 1. **`gridlock-scraper` (Deterministic Ingestion & Self-Healing Repair)**:
    - Resilient public records ingestion across TDLR TABS (state construction filings), City of Austin Open Data & AB+C, municipal agenda packets (Taylor, Round Rock), TCEQ (environmental/air/water permits), and ERCOT queues.

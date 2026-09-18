@@ -2,7 +2,8 @@
 
 ## 1. Overview & Motivation
 - **Problem Statement**: Standard AI interfaces force analytical investigations into linear chat transcripts. When interrogating complex infrastructure questions (*"Why were these permits withdrawn?"*, *"Compare water exposure across operators in Central Texas"*, *"Are Project Eagle B and C the same facility?"*), users need structured workspaces—timelines, comparative matrices, relationship graphs, and forensic source document viewers. Conversely, generating raw JSX/HTML on the fly causes layout breakage, security flaws, and CSS drift.
-- **User Story**: As an analyst, researcher, or evaluator, I want to ask natural-language questions about Texas compute infrastructure and have the system compose a purpose-built, interactive, and evidence-grounded analytical workspace that updates in-place as I refine my inquiry.
+- **User Story**: As an investigative researcher, journalist, or policy analyst, I need an interface that interprets intent and emits an in-place, typed UI AST composed from a curated component palette, allowing me to dynamically reshape workspaces while maintaining strict evidence traceability to immutable source documents.
+- **Repository Isolation**: Dedicated Git repository at `projects/gridlock-generative-console` maintaining complete architectural separation of concerns from the portfolio presentation gateway.
 
 ---
 

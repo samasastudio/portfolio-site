@@ -3,6 +3,7 @@
 ## 1. Overview & Motivation
 - **Problem Statement**: The physical footprint of artificial intelligence in Central Texas (hyperscale data centers, semiconductor fabs, grid substations, transmission corridors) is invisible in daily life and obscured on generic commercial maps. Standard web maps treat facilities as flat points of interest and lack temporal depth. Pure generative imagery hallucinates roads, parcels, and coordinates.
 - **User Story**: As a researcher, journalist, or civic observer, I need an interactive, temporal technical atlas that couples deterministic GIS accuracy with an evocative living architectural aesthetic, allowing me to perceive the accumulation of compute infrastructure across Texas and inspect meaningful state changes over time.
+- **Repository Isolation**: Dedicated Git repository at `projects/gridlock-graphical-atlas` maintaining complete architectural separation of concerns from the portfolio presentation gateway.
 
 ---
 

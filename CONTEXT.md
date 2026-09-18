@@ -9,6 +9,9 @@ Editorial Thesis: AI is not immaterial. It is becoming physical infrastructure (
 
 ## The Three Systems & Boundary Model
 
+> [!IMPORTANT]
+> **Separation of Concerns & Multi-Repo Architecture**: To maintain strict architectural boundaries and operational decoupling, each of the three systems lives in its own dedicated Git repository (`projects/gridlock-scraper`, `projects/gridlock-graphical-atlas`, `projects/gridlock-generative-console`). The portfolio codebase (`sam-johnson-portfolio`) is an isolated presentation gateway and client consumer; never merge them into a monorepo.
+
 1. **`gridlock-scraper` (Deterministic Ingestion & Self-Healing Repair)**:
    - Ingestion across heterogeneous Texas public records: TDLR TABS (state construction registrations), Austin Open Data & AB+C, municipal planning agendas/packets (e.g., Taylor, Round Rock), TCEQ (environmental/air/water permits), ERCOT (large-load interconnections), and TWDB (water context).
    - Deterministic fast path: REST APIs, Cheerio HTML extractors, structured PDF/tabular parsers.

@@ -3,6 +3,7 @@
 ## 1. Overview & Motivation
 - **Problem Statement**: Texas public records tracking compute infrastructure (data centers, semiconductor fabs, substations) are fragmented across siloed state agencies (TDLR, TCEQ), municipal permitting portals (Austin AB+C, Taylor City Council), and utility datasets (ERCOT, TWDB). Markup, table formats, and agenda packet structures frequently shift. Routine LLM scraping is slow, fragile, and cost-prohibitive.
 - **User Story**: As the Compute Atlas platform, I need a scheduled, resilient, and verifiable ingestion service that deterministically extracts public infrastructure filings, stores immutable source artifacts, auto-repairs broken selectors via sandboxed LLM replay, resolves multi-source entity ambiguities, and emits atomic temporal observations.
+- **Repository Isolation**: Dedicated Git repository at `projects/gridlock-scraper` maintaining complete architectural separation of concerns from the portfolio presentation gateway.
 
 ---
 

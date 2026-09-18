@@ -25,6 +25,7 @@
   3. *`gridlock-generative-console`*: Dynamic investigative workspace translating intent into strongly-typed UI AST layouts (`/systems/generative-ui`).
 - **Gateway Compatibility Invariant**: System ID renames must preserve backward-compatible alias resolution (`LEGACY_ID_MAP` in `app/_data/systems.ts`) for legacy identifiers (`atx-*`) and historical URL slugs.
 - **Workspace Mount Preservation**: When renaming workspace project folders on disk, always maintain NTFS directory junctions from legacy paths to ensure active IDE workspace sessions and task monitors never sever.
+- **Multi-Repo Architecture & Separation of Concerns**: Each of the Three Systems lives in its own dedicated, decoupled Git repository (`gridlock-scraper`, `gridlock-graphical-atlas`, `gridlock-generative-console`). The portfolio (`sam-johnson-portfolio`) functions strictly as an independent frontend gateway and presentation consumer; never merge these systems into a monorepo or introduce circular cross-repo source dependencies.
 - **Zero Waterfalls**: Parallelize independent async data fetches with `Promise.all()`.
 - **Config-Driven Props & Clear Seams**: Components accept explicit typed data props. Avoid boolean prop explosions and unneeded React Context overhead.
 
