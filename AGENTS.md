@@ -19,10 +19,12 @@
 ## 3. High-Level Architecture & Gateway Model
 - **Server-First (RSC)**: All route pages (`/`, `/work`, `/profile`, `/contact`) and layouts are Server Components by default.
 - **Isolated Leaf Hydration**: Only interactive leaves take `'use client'` (`LiveClock`, `NavRail`, and `ProjectArchive`).
-- **System Gateway Surface**: The portfolio serves as the primary frontend gateway for 3 upcoming application consoles:
-  1. *Generative UI Dashboard* (`app/systems/generative-ui` or embedded console).
-  2. *Self-Healing Web Scraper* (`app/systems/scraper` with external compute API/SSE).
-  3. *System Three* (TBD).
+- **System Gateway Surface**: The portfolio serves as the primary frontend gateway for the Three Compute Atlas systems (canonical `gridlock-` prefix):
+  1. *`gridlock-scraper`*: Deterministic ingestion across TDLR, municipal agendas, TCEQ, and ERCOT queues with out-of-band self-healing repair (`/systems/scraper`).
+  2. *`gridlock-graphical-atlas`*: Living temporal technical cartography combining GIS vector geometry with stateful generative plates (`/systems/graphical-atlas`).
+  3. *`gridlock-generative-console`*: Dynamic investigative workspace translating intent into strongly-typed UI AST layouts (`/systems/generative-ui`).
+- **Gateway Compatibility Invariant**: System ID renames must preserve backward-compatible alias resolution (`LEGACY_ID_MAP` in `app/_data/systems.ts`) for legacy identifiers (`atx-*`) and historical URL slugs.
+- **Workspace Mount Preservation**: When renaming workspace project folders on disk, always maintain NTFS directory junctions from legacy paths to ensure active IDE workspace sessions and task monitors never sever.
 - **Zero Waterfalls**: Parallelize independent async data fetches with `Promise.all()`.
 - **Config-Driven Props & Clear Seams**: Components accept explicit typed data props. Avoid boolean prop explosions and unneeded React Context overhead.
 
@@ -104,6 +106,7 @@ app/
   - *The Zero-Pulsing-Dot Rule*: Banned cosmetic pulsing dots (`@keyframes pulse`) and ambient gradient halos (`radial-halo`). Status beacons must be steady, static marks; only genuinely streaming data channels may animate.
   - *The Complete Slop Sweep Rule*: When auditing or eliminating AI slop patterns (per `impeccable.style/slop`), sweep all shell zones (TopBar, NavRail, Stage, Footer) without rationalizing exceptions for cosmetic animations.
   - *The Singular Triad Rule*: The "Rule of Three" (3-line headings, 3-column grids, 3-part lists, 3-part slogans) is an over-used AI template trope. In this project, the triad structure is strictly and exclusively reserved for the **Three Systems** (the Work archive and upcoming gateway consoles). All other surfaces must use 2-part, asymmetrical, or fluid compositions.
+  - *The Grid Infrastructure Scope Rule*: Compute Atlas is an observatory of electric transmission bottlenecks, ERCOT large load queues, and the Data Center Trilemma (Large, Fast, Firm) across Texas and national RTOs. Never artificially restrict system domain modeling, scraping targets, or visual cartography to Austin municipal limits.
   - *The Grounded Seam Rule*: Banned negative absolute offsets that protrude across container boundary seams (e.g. `right: -36px`) and centered floating badges that occlude content text. All stamp seals, badges, and action buttons must be structurally grounded and contained within their respective panels.
   - *The Authentic Voice Rule*: Banned kickers/eyebrows above headings, slogan-generator buzzwords ("Wayfinder", "Wild ideas"), repetitive "Make it [adj]" formulas, and folksy greetings ("Pull up a chair"). Headings speak directly with authentic systems-engineering clarity.
 - **Anti-AI Slop**: No generic purple-on-white gradients, unstyled system fonts, or cookie-cutter templates. Preserve tactile noise textures, subtle drop shadows, and editorial framing.
