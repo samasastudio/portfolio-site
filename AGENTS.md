@@ -120,3 +120,4 @@ app/
 - Use `diagnosing-bugs` for hypothesis-driven debugging without symptom-patching.
 - **Impeccable Workflow**: New surfaces default to `comp-first` (generate visual comp before code) per [`.impeccable/config.json`](./.impeccable/config.json). Maintain [`DESIGN.md`](./DESIGN.md) and [`.impeccable/design.json`](./.impeccable/design.json) synchronization. For comp and plate image generation, use the harness-native `generate_image` tool directly; never require or prompt for `OPENAI_API_KEY` (Impeccable CLI fallback is unnecessary in Antigravity).
 - Verify changes with `npm test` or `npx tsc --noEmit` before concluding tasks.
+- **Git Hook & Commit Standards**: Commits are automatically gated by Husky. All commit messages must strictly conform to Conventional Commits (`feat:`, `fix:`, `docs:`, `chore:`, `refactor:`, `test:`, `perf:`) enforced by `@commitlint/cli`. Never use `--no-verify` to bypass pre-commit or commit-msg hooks.
