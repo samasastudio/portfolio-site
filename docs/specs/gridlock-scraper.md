@@ -1,13 +1,13 @@
 # Technical Specification: gridlock-scraper (Compute Infrastructure Ingestion Engine)
 
 ## 1. Overview & Motivation
-- **Problem Statement**: Texas public records tracking compute infrastructure (data centers, semiconductor fabs, substations) are fragmented across siloed state agencies (TDLR, TCEQ), municipal permitting portals (Austin AB+C, Taylor City Council), and utility datasets (ERCOT, TWDB). Markup, table formats, and agenda packet structures frequently shift. Routine LLM scraping is slow, fragile, and cost-prohibitive.
+- **Problem Statement**: Texas public records tracking compute infrastructure (data centers, semiconductor fabs, substations) are fragmented across siloed state agencies (TDLR, TCEQ), municipal permitting portals (Austin AB+C, Taylor City Council), and utility datasets (ERCOT, TWDB). Markup, table formats, and agenda packet structures frequently shift without notice. Routine LLM scraping is slow, fragile, and cost-prohibitive.
 - **User Story**: As the Compute Atlas platform, I need a scheduled, resilient, and verifiable ingestion service that deterministically extracts public infrastructure filings, stores immutable source artifacts, auto-repairs broken selectors via sandboxed LLM replay, resolves multi-source entity ambiguities, and emits atomic temporal observations.
 - **Repository Isolation**: Dedicated Git repository at `projects/gridlock-scraper` maintaining complete architectural separation of concerns from the portfolio presentation gateway.
 
 ---
 
-## 2. Architecture & Pipeline
+## 2. Architecture & Seams
 
 ### 2.1 Pipeline Flow
 ```text
@@ -40,52 +40,60 @@
        │                 └──► FAIL ──► [Escalate to Source Health / Human Alert]
 ```
 
-### 2.2 Core Modules
+### 2.2 Public Interfaces & API Routes
 
-1. **Connector Framework (`src/connectors/`)**:
-   - **`tdlr-tabs.ts`**: Connects to Texas Department of Licensing and Regulation TABS portal. Extracts project number, estimated cost, square footage, owner/tenant, architect, location, and dates.
-   - **`austin-permits.ts`**: Queries City of Austin Socrata Open Data API & AB+C portal for commercial building permits and site plans.
-   - **`municipal-agendas.ts`**: Deterministic HTML/PDF scraper monitoring city council and planning commission agenda packets (Taylor, Hutto, Round Rock).
-   - **`tceq-permits.ts`**: Extracts air quality standard permits (backup diesel generator clusters) and wastewater authorizations.
-   - **`ercot-queue.ts`**: Parses published ERCOT large-load interconnection spreadsheets.
+All endpoints communicate via JSON and require bearer token authentication in production:
 
-2. **Raw Artifact Storage (`src/storage/artifact-store.ts`)**:
-   - Compresses raw payloads with Gzip and computes SHA-256 content hashes.
-   - Saves to `gs://compute-atlas-artifacts/{source_family}/{year}/{sha256}.{ext}.gz`.
-   - Records metadata in `source_artifacts` SQL table.
+1. **`POST /api/ingest/trigger`**
+   - **Request Payload**:
+     ```typescript
+     interface TriggerIngestRequest {
+       connectorId?: string; // e.g. "tdlr_tabs", "austin_permits", "tceq", "ercot_queue"
+       dryRun?: boolean;
+       targetDateRange?: { from: string; to: string };
+     }
+     ```
+   - **Response**: `{ runId: string; status: "queued" | "running"; timestamp: string }`
 
-3. **Invariant Guard (`src/guards/invariant-guard.ts`)**:
-   - Evaluates pre- and post-extraction conditions:
-     - Record volume drop: Flags run if extracted records fall $>30\%$ below historical median.
-     - Required field coverage: Every record must contain identifier, address/county, and filing date.
-     - Type check: Zod schemas validate observation fields.
+2. **`GET /api/ingest/status?runId=:id`**
+   - **Response**:
+     ```typescript
+     interface IngestStatusResponse {
+       runId: string;
+       connectorId: string;
+       recordsExtracted: number;
+       artifactsStored: number;
+       invariantStatus: "passed" | "anomaly_detected" | "repairing";
+       durationMs: number;
+     }
+     ```
 
-4. **Out-of-Band Repair Agent (`src/agent/repair-agent.ts`)**:
-   - Wakes only on invariant failure.
-   - Extracts a sanitized DOM skeleton (pruning styles, SVGs, and inline scripts) or document sample.
-   - Bundles: (1) DOM skeleton, (2) failing selector manifest, (3) target schema, (4) last 3 successful extraction records.
-   - Prompts Gemini 2.5 Flash to synthesize updated CSS/XPath selectors or regex extraction rules.
-   - Executes patch in an isolated sandbox against 5 historical fixture files. Only promotes if all historical and live fixtures extract with 100% invariant compliance.
+3. **`GET /api/artifacts/:sha256`**
+   - **Response**: Returns gzipped raw artifact stream with `Content-Type`, `X-Source-Url`, and `X-Captured-At` headers.
 
-5. **Entity Resolution Engine (`src/engine/entity-resolver.ts`)**:
-   - Deterministic matching: Parcel IDs, normalized physical addresses, applicant phone/email patterns, and legal descriptions.
-   - Probabilistic candidate matching: Jaro-Winkler distance on project names ("Project Eagle Phase 1" vs "Eagle Facility B").
-   - Gemini Flash adjudication: When confidence is between $0.60$ and $0.85$, agent evaluates source context and outputs match confidence and citation evidence without silent merging.
+4. **`POST /api/repair/sandbox-replay`**
+   - **Request Payload**:
+     ```typescript
+     interface SandboxReplayRequest {
+       connectorId: string;
+       patch: { selectors?: Record<string, string>; extractorScript?: string };
+       fixtureIds: string[];
+     }
+     ```
+   - **Response**: `{ allPassed: boolean; passedCount: number; totalCount: number; errors: string[] }`
 
----
-
-## 3. Data Models & Drizzle Schemas
+### 2.3 Data Models & Drizzle Schemas
 
 ```typescript
-// src/schema.ts
+// src/schema/scraper.ts
 import { pgTable, uuid, text, timestamp, numeric, jsonb, boolean, integer } from "drizzle-orm/pg-core";
 
 export const sourceArtifacts = pgTable("source_artifacts", {
   id: uuid("id").primaryKey().defaultRandom(),
   sha256Hash: text("sha256_hash").notNull().unique(),
-  sourceFamily: text("source_family").notNull(), // "tdlr_tabs", "austin_permits", "tceq", "municipal_agenda"
+  sourceFamily: text("source_family").notNull(), // "tdlr_tabs", "austin_permits", "tceq", "municipal_agenda", "ercot_queue"
   sourceUrl: text("source_url").notNull(),
-  storagePath: text("storage_path").notNull(),
+  storagePath: text("storage_path").notNull(), // gs://compute-atlas-artifacts/{source_family}/{year}/{sha256}.{ext}.gz
   byteSize: integer("byte_size").notNull(),
   mimeType: text("mime_type").notNull(),
   capturedAt: timestamp("captured_at").defaultNow().notNull(),
@@ -128,9 +136,62 @@ export const repairAudits = pgTable("repair_audits", {
 });
 ```
 
+### 2.4 Core Modules
+1. **Connector Framework (`src/connectors/`)**:
+   - `tdlr-tabs.ts`: TDLR TABS construction registration extractor.
+   - `austin-permits.ts`: City of Austin Socrata Open Data API & AB+C portal.
+   - `municipal-agendas.ts`: City council/planning commission PDF/HTML agenda packet monitor.
+   - `tceq-permits.ts`: Air quality and industrial wastewater permits parser.
+   - `ercot-queue.ts`: ERCOT large-load interconnection spreadsheet ingestion.
+2. **Artifact Store (`src/storage/`)**: SHA-256 hash calculation, Gzip compression, and Cloud Storage persistence.
+3. **Invariant Guard (`src/guards/`)**: Volume drop detection, required field checks, and Zod type assertions.
+4. **Out-of-Band Repair Agent (`src/agent/`)**: Gemini 2.5 Flash patch synthesis and sandbox regression runner.
+5. **Entity Resolution Engine (`src/engine/`)**: Address normalization, parcel matching, and probabilistic adjudication.
+
 ---
 
-## 4. Verification & Testing Strategy
-- **Unit Tests (`npm test`)**: Connector parsers tested against static fixture files stored under `tests/fixtures/`.
-- **Sandbox Replay Suite**: CLI runner `npm run test:replay -- --connector=tdlr_tabs` executes extractor against all archived historical fixtures.
-- **Invariant Gate Simulation**: Test failure detection by injecting malformed HTML fixtures into the test runner and verifying that the anomaly guard triggers without crashing the process.
+## 3. Edge Cases & Error Handling
+
+1. **Bot Protection & Anti-Scraping Defenses**:
+   - If an agency portal deploys Cloudflare Turnstile or Akamai bot protection returning HTTP 403/503, the connector does *not* brute-force requests. It logs a `bot_block` error code, suspends the connector, and notifies the Source Health console.
+2. **Record Volume Drop (>30% Anomaly Threshold)**:
+   - If an ingestion run yields $>30\%$ fewer records than the 30-day moving median, the Invariant Guard halts automatic observation promotion and triggers the Out-of-Band Repair Agent.
+3. **Portal Layout / Selector Drift**:
+   - When CSS selectors return null elements, the repair agent extracts a sanitized DOM skeleton (stripping `<script>`, `<style>`, and SVG paths), bundles the last 3 valid records, and prompts Gemini 2.5 Flash to synthesize replacement selectors.
+4. **Corrupted or Scanned PDF Packets**:
+   - Municipal agenda packets containing scanned non-text PDF pages automatically route through local OCR preprocessing (tesseract/pdf-parse) before text extraction.
+5. **Rate Limiting & Transient Network Outages**:
+   - All network requests implement exponential backoff with randomized jitter (initial 500ms, max 3 retries) for HTTP 429 and 5xx responses.
+
+---
+
+## 4. Acceptance Criteria
+
+- [ ] **Deterministic Extraction Fidelity**:
+  - *Given* a valid TDLR TABS project page,
+  - *When* processed by `tdlr-tabs.ts`,
+  - *Then* project number, estimated cost, square footage, address, and owner are extracted with 100% precision against verified fixtures.
+- [ ] **Immutable Artifact Storage**:
+  - *Given* any incoming HTTP response or PDF file,
+  - *When* ingested by `src/storage/artifact-store.ts`,
+  - *Then* an immutable gzipped file is written to object storage under its exact SHA-256 hash, and verified before writing to `source_artifacts`.
+- [ ] **Append-Only Observation Invariant**:
+  - *Given* an updated permit status for an existing project,
+  - *When* entity resolution links it to the existing `subjectId`,
+  - *Then* a new row is appended to `observations` with `observedAt` and `effectiveAt`; historical observation rows are never overwritten or deleted.
+- [ ] **Out-of-Band Repair Sandbox Gate**:
+  - *Given* a broken connector selector injected into the test harness,
+  - *When* the repair agent synthesizes a patch,
+  - *Then* the patch is tested against 5 historical fixture files in sandboxed replay and rejected if test pass rate is $<100\%$.
+- [ ] **Zero Autonomous Production Code Commits**:
+  - *Given* a passing repair patch,
+  - *When* promoted,
+  - *Then* the patch is applied only to `connector_configs.manifest` in the database; production application source code files are never mutated directly by the model.
+
+---
+
+## 5. Non-Goals (Out of Scope)
+
+1. **Sub-Second Streaming Ingestion**: Texas regulatory agencies update filings on daily or weekly cycles; streaming websockets or real-time polling are out of scope.
+2. **Circumvention of Hard Legal Paywalls**: The scraper targets only public records, open government portals, and public FOIA/open data APIs.
+3. **Autonomous Production Code Deployment**: The repair agent modifies runtime connector configuration manifests in the database; it does not push git commits directly to production branches.

@@ -7,7 +7,7 @@
 
 ---
 
-## 2. Architecture & Pipeline
+## 2. Architecture & Seams
 
 ### 2.1 Intent-to-AST Pipeline
 ```text
@@ -30,23 +30,50 @@
 [Deterministic React Renderer] ──(Curated Design System Palette)
        │
        ├──► <EntityHeader />
-       ├──► <ComparisonMatrix />
+       ├──► <Comparison />
        ├──► <Timeline />
        ├──► <EvidenceViewer />
        └──► <MethodologyPanel />
 ```
 
-### 2.2 In-Place Workspace Mutation
-- Follow-up prompts transform the active workspace state rather than appending chat bubbles:
-  - Initial query: *"Show all Central Texas projects over $500M"* $\to$ Renders `MapView` + `DataTable`.
-  - Refinement: *"Only show proposed or permitting"* $\to$ Applies filter to active `MapView` and `DataTable` without reloading layout.
-  - Deep-dive: *"Compare the top two by water basin"* $\to$ Morphs layout to include `Comparison` and `RelationshipGraph` with TWDB aquifer overlays.
+### 2.2 Public Interfaces & API Routes
 
----
+All endpoints communicate via JSON and require session tokens:
 
-## 3. UI AST Grammar & Component Palette
+1. **`POST /api/investigate/plan`**
+   - **Request Payload**: `{ query: string; activeWorkspaceId?: string; viewportContext?: Record<string, unknown> }`
+   - **Response**: `WorkspaceLayoutAST` (validated JSON tree matching Zod schema).
 
-### 3.1 AST TypeScript Definitions
+2. **`POST /api/investigate/mutate`**
+   - **Request Payload**:
+     ```typescript
+     interface MutateWorkspaceRequest {
+       workspaceId: string;
+       action: "filter" | "pivot" | "add_widget" | "remove_widget" | "compare";
+       targetWidgetId?: string;
+       refinementPrompt: string;
+     }
+     ```
+   - **Response**: `WorkspaceLayoutAST` (transformed workspace tree preserving unaffected widget states).
+
+3. **`GET /api/evidence/:artifactId`**
+   - **Response**:
+     ```typescript
+     interface EvidenceResponse {
+       artifactId: string;
+       sourceFamily: string;
+       sourceUrl: string;
+       capturedAt: string;
+       sha256Hash: string;
+       renderedContent: string; // Sanitized HTML or PDF download URL
+       extractedSpans: { text: string; confidence: number; boundingBox?: [number, number, number, number] }[];
+     }
+     ```
+
+4. **`GET /api/source-health/telemetry`**
+   - **Response**: List of connector statuses, median extraction volumes, error counts, and recent repair audits.
+
+### 2.3 UI AST Data Contracts & Zod Schemas
 
 ```typescript
 // src/types/ui-ast.ts
@@ -68,59 +95,100 @@ export const ComponentTypeSchema = z.enum([
   "Alert"
 ]);
 
-export type ComponentType = z.infer<typeof ComponentTypeSchema>;
+export const UIWidgetNodeSchema: z.ZodType<UIWidgetNode> = z.lazy(() =>
+  z.object({
+    id: z.string(),
+    type: ComponentTypeSchema,
+    title: z.string().optional(),
+    props: z.record(z.unknown()),
+    children: z.array(UIWidgetNodeSchema).optional(),
+  })
+);
 
 export interface UIWidgetNode {
   id: string;
-  type: ComponentType;
+  type: z.infer<typeof ComponentTypeSchema>;
+  title?: string;
   props: Record<string, unknown>;
   children?: UIWidgetNode[];
 }
 
-export interface WorkspaceLayoutAST {
-  version: "1.0";
-  title: string;
-  intentSummary: string;
-  layoutGrid: "single_column" | "split_panel" | "dashboard_grid" | "forensic_split";
-  rootNodes: UIWidgetNode[];
-  activeCitations: {
-    sourceArtifactId: string;
-    sourceFamily: string;
-    citationLabel: string;
-  }[];
-}
+export const WorkspaceLayoutASTSchema = z.object({
+  version: z.literal("1.0"),
+  title: z.string(),
+  intentSummary: z.string(),
+  layoutGrid: z.enum(["single_column", "split_panel", "dashboard_grid", "forensic_split"]),
+  rootNodes: z.array(UIWidgetNodeSchema),
+  activeCitations: z.array(
+    z.object({
+      sourceArtifactId: z.string(),
+      sourceFamily: z.string(),
+      citationLabel: z.string(),
+      confidence: z.number().min(0).max(1),
+    })
+  ),
+});
+
+export type WorkspaceLayoutAST = z.infer<typeof WorkspaceLayoutASTSchema>;
 ```
 
-### 3.2 Curated Component Registry
-All components are pre-built React components styled using CSS variables from `app/globals.css` (`--paper`, `--ink`, `--rust`, `--indigo`, `--moss`, `--cedar`):
-
-1. **`EntityHeader`**: Displays canonical project name, operator, lifecycle status chip, and primary location.
-2. **`MapView`**: Bounded GIS vector view highlighting targeted facilities, municipal boundaries, and grid routes.
-3. **`Timeline`**: Multi-track timeline separating development actions (zoning/permits) from environmental actions (TCEQ notices).
-4. **`EvidenceViewer`**: Forensic split-pane displaying the original source artifact (HTML render or PDF) with highlighted extracted text and confidence scores.
-5. **`RelationshipGraph`**: Interactive SVG node-link graph mapping connections across `Project`, `Facility`, `Organization`, `Utility`, and `Permit` nodes.
-6. **`Comparison`**: Structured side-by-side comparison matrix evaluating acreage, power requirements, water basin exposure, and incentive values.
-7. **`DataTable`**: High-density sortable and filterable data grid with export capability.
-8. **`SourceDiff`**: Visual line-by-line comparison of two historical filings for the same project.
-9. **`MethodologyPanel`**: Explains data provenance, entity resolution confidence, and caveats for inferred metrics.
-10. **`Alert`**: Emphasizes conflicting public filings, withdrawn applications, or pending regulatory review.
-
----
-
-## 4. Source Health Console Surface
-
-The console incorporates a dedicated architectural view (`/systems/source-health`) demonstrating the reliability of the ingestion infrastructure:
-- **Connector Dashboard**: Real-time status badges (`healthy`, `repairing`, `anomaly`, `paused`) for each connected public records source.
-- **Invariant Monitor**: Extraction volume graphs, required field coverage rates, and schema validation histories.
-- **Repair Sandbox Log**: Detailed audit trail for every automated repair proposal, showing:
-  - Input diagnostic bundle & failing selector.
-  - Synthesized patch diff.
-  - Replay test results against historical fixtures.
-  - Automated promotion or escalation record.
+### 2.4 Curated Component Palette
+All widgets are pure React components styled using CSS design variables (`--paper`, `--ink`, `--rust`, `--indigo`, `--moss`, `--cedar`):
+- `EntityHeader`: Canonical project branding, operator, lifecycle status chip.
+- `MapView`: Bounded vector map displaying parcel polygons and substation lines.
+- `Timeline`: Parallel tracks for municipal development actions and environmental filings.
+- `EvidenceViewer`: Split-screen source document display with highlighted extraction spans.
+- `RelationshipGraph`: Force-directed graph linking projects, operators, utilities, and permits.
+- `Comparison`: Multi-column comparison grid evaluating acreage, power, water, and abatements.
+- `DataTable`: High-density sortable, filterable tabular records.
+- `SourceDiff`: Forensic visual line-by-line diff comparing sequential filings.
+- `MethodologyPanel`: Disclosure of data sources, confidence metrics, and potential biases.
+- `Alert`: Visual callout highlighting regulatory conflicts or withdrawn applications.
 
 ---
 
-## 5. Verification & Testing Strategy
-- **AST Schema Validation**: 100% of LLM planner responses validated against `WorkspaceLayoutAST` Zod schema before dispatching to the React tree.
-- **Widget Unit Tests**: Every widget in the component palette tested with mock props under Vitest to ensure layout stability, accessibility (ARIA), and error boundary containment.
-- **Interaction Testing**: Playwright tests verifying in-place workspace mutation when follow-up prompts are submitted.
+## 3. Edge Cases & Error Handling
+
+1. **LLM AST Hallucination / Schema Invalidation**:
+   - If Gemini Flash returns a layout payload that fails `WorkspaceLayoutASTSchema.safeParse()`, the renderer executes a recovery parse. If still invalid, it renders a fallback `dashboard_grid` containing standard `DataTable` and `Alert` widgets explaining the parse fallback.
+2. **Missing Evidence Citations**:
+   - Every metric or assertion must map to an active citation. The AST validator checks `activeCitations` against widget props; widgets lacking valid `sourceArtifactId` citations render an "Unverified Public Record" indicator badge.
+3. **Relationship Graph Cycle & Node Explosions**:
+   - When an operator (e.g. AWS or ERCOT) has hundreds of connected entities, the graph builder caps depth at 2 degrees and collapses high-cardinality clusters into aggregate badge nodes to prevent browser DOM freezes.
+4. **Zero-Result / Out-of-Scope Queries**:
+   - If an inquiry finds no matching public records, the console emits an `Alert` node offering suggested query alternatives rather than an empty screen.
+5. **Layout Thrashing on Rapid Refinements**:
+   - User refinement queries debounce at 300ms, and AST diffing applies React tree reconciliations in-place without unmounting stable subtrees.
+
+---
+
+## 4. Acceptance Criteria
+
+- [ ] **100% AST Schema Enforcement**:
+  - *Given* any natural-language input query,
+  - *When* evaluated by the Investigation Planner,
+  - *Then* the emitted layout conforms 100% to `WorkspaceLayoutASTSchema` before dispatching to the React tree.
+- [ ] **In-Place Workspace Mutation**:
+  - *Given* an active workspace displaying a `MapView` and `DataTable`,
+  - *When* the user submits a follow-up refinement (e.g. *"Only show projects with water permits"*),
+  - *Then* the active `MapView` and `DataTable` update their state in-place without page reload or creating conversational chat bubbles.
+- [ ] **Forensic Evidence Verification**:
+  - *Given* any metric rendered in a `Comparison` or `MetricGroup` widget,
+  - *When* clicked by the user,
+  - *Then* `EvidenceViewer` immediately displays the underlying `SourceArtifact` with highlighted source text.
+- [ ] **Planner Latency Ceiling**:
+  - *Given* an inquiry requiring database retrieval and AST planning,
+  - *When* evaluated on standard infrastructure,
+  - *Then* end-to-end response latency is $<1500\text{ ms}$.
+- [ ] **Source Health Telemetry Accuracy**:
+  - *Given* the `/systems/source-health` view,
+  - *When* loaded by an administrator,
+  - *Then* it displays real-time connector execution status, invariant failure logs, and repair audit trails.
+
+---
+
+## 5. Non-Goals (Out of Scope)
+
+1. **Unsandboxed Code / Raw HTML Generation**: The model never generates raw HTML or executable JavaScript strings; it strictly configures typed widget AST nodes.
+2. **Generic Conversational Chatbot**: No linear conversational chit-chat or text-heavy essay bubbles. All responses are structured analytical workspaces.
+3. **Direct Write Access**: The console is an analytical observatory; it does not submit filings or modify regulatory agency databases.
