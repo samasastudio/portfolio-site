@@ -399,3 +399,9 @@
 398 http fetch GET 200 https://registry.npmjs.org/zod-to-json-schema/-/zod-to-json-schema-3.25.2.tgz 1178ms (cache miss)
 399 http fetch GET 200 https://registry.npmjs.org/web-streams-polyfill/-/web-streams-polyfill-3.3.3.tgz 1239ms (cache miss)
 400 http fetch GET 200 https://registry.npmjs.org/zod/-/zod-3.25.76.tgz 2848ms (cache miss)
+401 verbose cwd c:\Users\Owner\projects\sam-johnson-portfolio\.agents\plugins\github
+402 verbose os Windows_NT 10.0.26200
+403 verbose node v24.14.0
+404 verbose npm  v11.12.1
+405 verbose exit 0
+406 info ok

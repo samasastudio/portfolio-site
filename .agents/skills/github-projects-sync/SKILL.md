@@ -40,6 +40,22 @@ gh project item-list <project-number> --owner <owner> --format json --limit 50
 ```
 *Locate the target Item ID (`PVTI_...`).*
 
+### Step 3b: Create Draft Issue Item (PowerShell-Safe)
+```powershell
+# Define multi-line markdown ticket body safely in Windows PowerShell
+$body = @"
+### Ticket [N]: [Title]
+- **Objective**: [Deliverable description]
+- **Acceptance Criteria**:
+  - [ ] Criterion 1
+- **Verification**: [Verification command]
+"@
+
+# Create draft issue on board
+gh project item-create <project-number> --owner <owner> --title "<title>" --body "$body" --format json
+```
+*Record output Item ID (`PVTI_...`) to set its status in Step 4.*
+
 ### Step 4: Update Item Status
 ```bash
 # Update item status to Done / In Progress / Todo

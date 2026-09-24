@@ -110,6 +110,10 @@ app/
   - *The Grid Infrastructure Scope Rule*: Compute Atlas is an observatory of electric transmission bottlenecks, ERCOT large load queues, and the Data Center Trilemma (Large, Fast, Firm) across Texas and national RTOs. Never artificially restrict system domain modeling, scraping targets, or visual cartography to Austin municipal limits.
   - *The Grounded Seam Rule*: Banned negative absolute offsets that protrude across container boundary seams (e.g. `right: -36px`) and centered floating badges that occlude content text. All stamp seals, badges, and action buttons must be structurally grounded and contained within their respective panels.
   - *The Authentic Voice Rule*: Banned kickers/eyebrows above headings, slogan-generator buzzwords ("Wayfinder", "Wild ideas"), repetitive "Make it [adj]" formulas, and folksy greetings ("Pull up a chair"). Headings speak directly with authentic systems-engineering clarity.
+  - *The Legible Diagram Rule*: Never cram complex multi-step architectures into a single monolithic, multi-subgraph Mermaid chart (causes container down-scaling and microscopic unreadable text). When generating architectural diagrams for review:
+    1. Break the system into modular, sequential sub-flows (Macro Flow, Core Execution/Gate, Failure/Repair Loop).
+    2. Enforce explicit readable font size variables in Mermaid blocks (`%%{init: {'theme': 'neutral', 'themeVariables': { 'fontSize': '15px' }}}%%`).
+    3. When preparing documentation for formal review, deliver as a dedicated markdown review artifact rather than a single compressed chat message.
 - **Anti-AI Slop**: No generic purple-on-white gradients, unstyled system fonts, or cookie-cutter templates. Preserve tactile noise textures, subtle drop shadows, and editorial framing.
 
 ---

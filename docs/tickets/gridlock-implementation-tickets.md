@@ -5,11 +5,12 @@
 
 ## Overview & Execution Strategy
 
-Implementation proceeds along a 4-phase tracer-bullet sequence across the decoupled repositories:
+Implementation proceeds along a 5-phase tracer-bullet sequence across the decoupled repositories:
 1. **Phase 1: Ingestion Engine (`gridlock-scraper`)** — Tickets 01–07: Scaffolding, artifact storage, deterministic connectors, out-of-band repair agent, and replay sandbox.
 2. **Phase 2: Temporal Technical Atlas (`gridlock-graphical-atlas`)** — Tickets 08–12: MapLibre GIS base, temporal projectors, Gemini Interactions API plate generator, and temporal scrubber.
 3. **Phase 3: Generative Analytical Workspace (`gridlock-generative-console`)** — Tickets 13–17: UI AST planner, in-place workspace mutation, curated widget palette, and forensic Evidence Viewer.
 4. **Phase 4: Portfolio Gateway Integration (`sam-johnson-portfolio`)** — Ticket 18: Live gateway surface wiring and Source Health console.
+5. **Phase 5: Ingestion Deployment & Production Scheduling (`gridlock-scraper`)** — Tickets 19–22: Containerization, CLI runner, state/artifact R2 sync, and scheduled GitHub Actions orchestration.
 
 ---
 
@@ -292,3 +293,68 @@ Implementation proceeds along a 4-phase tracer-bullet sequence across the decoup
   - [ ] Zero hydration errors; passes full `npm test` and `npx tsc --noEmit`.
 - **Verification**: `npm test`
 - **Dependencies**: Ticket 07, Ticket 12, Ticket 17
+
+---
+
+## Phase 5: Ingestion Deployment & Production Scheduling (`gridlock-scraper`)
+
+### Ticket 19: Containerize `gridlock-scraper` with Playwright Base
+- **System**: `gridlock-scraper`
+- **Objective**: Package the scraper into a secure, reproducible Linux container using Microsoft's official Playwright base image.
+- **Scope / Files**:
+  - `projects/gridlock-scraper/Dockerfile`
+  - `projects/gridlock-scraper/.dockerignore`
+  - `projects/gridlock-scraper/package.json`
+- **Acceptance Criteria**:
+  - [ ] Multi-stage `Dockerfile` based on `mcr.microsoft.com/playwright:v1.63.0-noble`.
+  - [ ] Installs Node.js >= 22 dependencies via `npm ci` and runs `npm run build`.
+  - [ ] Drops root privileges to run as unprivileged `pwuser`.
+  - [ ] Image compiles and verifies offline tests cleanly inside container.
+- **Verification**: `docker build -t gridlock-scraper .`
+- **Dependencies**: Ticket 01, Ticket 06
+
+### Ticket 20: Ingestion CLI Entrypoint & Process Exit Protocol
+- **System**: `gridlock-scraper`
+- **Objective**: Implement a command-line entrypoint with source filtering and deterministic process exit codes for orchestrators.
+- **Scope / Files**:
+  - `projects/gridlock-scraper/src/cli.ts`
+  - `projects/gridlock-scraper/tests/cli.test.ts`
+  - `projects/gridlock-scraper/package.json`
+- **Acceptance Criteria**:
+  - [ ] CLI parses arguments: `--source=<tdlr|ercot|tceq|municipal|all>`, `--dry-run`, `--force`.
+  - [ ] Exits with code `0` on clean completion or content-hash early exit.
+  - [ ] Exits with code `1` on uncaught network/runtime crashes.
+  - [ ] Exits with code `2` when an invariant breach or anomaly is quarantined (notifies external monitoring).
+  - [ ] Unit tests verify argument parsing and exit code mapping.
+- **Verification**: `npm test tests/cli.test.ts`
+- **Dependencies**: Ticket 03, Ticket 05, Ticket 06
+
+### Ticket 21: Cloudflare R2 State Hydration & Snapshot Publishing Hooks
+- **System**: `gridlock-scraper`
+- **Objective**: Build pre-run hydration and post-run sync scripts to pull and push `gridlock.db`, raw `.artifacts/`, and `dist/exports/*.json` to S3/R2 storage.
+- **Scope / Files**:
+  - `projects/gridlock-scraper/scripts/sync-state.ts`
+  - `projects/gridlock-scraper/tests/sync-state.test.ts`
+  - `projects/gridlock-scraper/package.json`
+- **Acceptance Criteria**:
+  - [ ] Pre-run pulls existing `gridlock.db` and SHA-256 hash manifest from Cloudflare R2 (falls back to fresh schema if empty).
+  - [ ] Post-run pushes mutated `gridlock.db` atomically (upload to `.tmp` key then move).
+  - [ ] Syncs new content-addressable raw payload blobs to R2 bucket.
+  - [ ] Verifies payload SHA-256 checksums before and after upload.
+- **Verification**: `npm test tests/sync-state.test.ts`
+- **Dependencies**: Ticket 02, Ticket 20
+
+### Ticket 22: Scheduled Ingestion Workflow & Anomaly Webhook Alerts
+- **System**: `gridlock-scraper`
+- **Objective**: Configure scheduled CI/CD runner execution with automated secret binding and anomaly alerting.
+- **Scope / Files**:
+  - `projects/gridlock-scraper/.github/workflows/ingest.yml`
+  - `projects/gridlock-scraper/scripts/notify-anomaly.ts`
+- **Acceptance Criteria**:
+  - [ ] GitHub Actions workflow triggers every 6 hours (`cron: '0 */6 * * *'`) and supports `workflow_dispatch`.
+  - [ ] Runs pre-sync -> CLI ingestion sweep -> post-sync sequentially.
+  - [ ] Binds repository secrets: `CLOUDFLARE_R2_*`, `GEMINI_API_KEY`, `ALERT_WEBHOOK_URL`.
+  - [ ] Dispatches webhook alert (Discord/Slack) if CLI exits with code `2` (anomaly quarantined).
+- **Verification**: `gh workflow view ingest.yml` or manual dry-run
+- **Dependencies**: Ticket 19, Ticket 20, Ticket 21
+
