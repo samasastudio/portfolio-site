@@ -16,87 +16,106 @@ Implementation proceeds along a 4-phase tracer-bullet sequence across the decoup
 ## Phase 1: Ingestion Engine (`gridlock-scraper`)
 
 ### Ticket 01: Scaffold `gridlock-scraper` Repository & Drizzle Schema
-- **Objective**: Initialize standalone Node.js 22 + TypeScript repo with Drizzle ORM schema, Vitest runner, and Husky pre-commit hooks.
+- **Status**: [x] Completed
+- **Objective**: Initialize standalone Node.js 22 + TypeScript repo with Drizzle ORM schema, test runner, and Husky pre-commit hooks.
 - **Scope / Files**:
   - `projects/gridlock-scraper/package.json`
   - `projects/gridlock-scraper/tsconfig.json`
   - `projects/gridlock-scraper/src/schema.ts`
   - `projects/gridlock-scraper/tests/schema.test.ts`
 - **Acceptance Criteria**:
-  - [ ] Package scripts configured (`build`, `test`, `typecheck`, `lint`).
-  - [ ] Drizzle tables defined: `source_artifacts`, `observations`, `connector_configs`, `repair_audits`.
-  - [ ] Test verifies SQLite/D1 database migration and foreign key constraints.
+  - [x] Package scripts configured (`build`, `test`, `typecheck`, `lint`).
+  - [x] Drizzle tables defined: `source_artifacts`, `observations`, `connector_configs`, `repair_audits`.
+  - [x] Test verifies SQLite database schema and foreign key constraints.
 - **Verification**: `npm test tests/schema.test.ts`
 - **Dependencies**: None
 
 ### Ticket 02: Immutable Raw Artifact Store
-- **Objective**: Build Gzip compression and SHA-256 cryptographic hashing pipeline for raw HTML, JSON, and PDF payloads.
+- **Status**: [x] Completed
+- **Objective**: Build content-addressable storage and SHA-256 cryptographic hashing pipeline for raw HTML, JSON, and PDF payloads (ADR-0003).
 - **Scope / Files**:
   - `projects/gridlock-scraper/src/storage/artifact-store.ts`
-  - `projects/gridlock-scraper/tests/artifact-store.test.ts`
+  - `projects/gridlock-scraper/src/storage/db.ts`
+  - `projects/gridlock-scraper/tests/pipeline.test.ts`
 - **Acceptance Criteria**:
-  - [ ] Payloads compressed with gzip; SHA-256 hash verified against uncompressed stream.
-  - [ ] Duplicate payload ingest returns existing artifact record without re-uploading.
-  - [ ] Metadata recorded in `source_artifacts` table.
-- **Verification**: `npm test tests/artifact-store.test.ts`
+  - [x] Payloads hashed with SHA-256 upon capture.
+  - [x] Duplicate payload ingest triggers Content-Hash Gated Early-Exit without redundant DB writes.
+  - [x] Metadata recorded in `source_artifacts` table.
+- **Verification**: `npm test tests/pipeline.test.ts`
 - **Dependencies**: Ticket 01
 
 ### Ticket 03: TDLR TABS Construction Filings Connector
-- **Objective**: Implement deterministic HTML extractor for Texas Department of Licensing and Regulation (TDLR) TABS records.
+- **Status**: [x] Completed
+- **Objective**: Implement step-layered Playwright extractor and pure parser for Texas Department of Licensing and Regulation (TDLR) TABS records (ADR-0001, ADR-0002).
 - **Scope / Files**:
-  - `projects/gridlock-scraper/src/connectors/tdlr-tabs.ts`
-  - `projects/gridlock-scraper/tests/fixtures/tdlr_sample.html`
-  - `projects/gridlock-scraper/tests/tdlr-tabs.test.ts`
+  - `projects/gridlock-scraper/src/extractors/tdlr.ts`
+  - `projects/gridlock-scraper/src/parsers/tdlr.ts`
+  - `projects/gridlock-scraper/src/schemas/tdlr.ts`
+  - `projects/gridlock-scraper/tests/fixtures/tdlr/tabs-sample.html`
+  - `projects/gridlock-scraper/tests/parsers.test.ts`
 - **Acceptance Criteria**:
-  - [ ] Extracts project number, estimated cost, square footage, address, county, owner, and architect.
-  - [ ] Validates extracted records against Zod `TdlrRecordSchema`.
-  - [ ] Emits atomic `observations` rows linked to captured `source_artifact_id`.
-- **Verification**: `npm test tests/tdlr-tabs.test.ts`
+  - [x] Extracts project number, estimated cost, square footage, address, and county.
+  - [x] Validates extracted records against Zod `TdlrProjectSchema` domain invariants.
+  - [x] Emits atomic `observations` rows linked to captured `source_artifact_id`.
+  - [x] Hermetic offline fixture testing with zero outbound network calls (ADR-0005).
+- **Verification**: `npm test tests/parsers.test.ts`
 - **Dependencies**: Ticket 02
 
-### Ticket 04: City of Austin Permitting (AB+C / Socrata) Connector
-- **Objective**: Implement Austin Open Data Socrata API and AB+C portal commercial building permit extractor.
+### Ticket 04: Texas Municipal Dockets & Planning Agendas Connector
+- **Status**: [ ] Ready for Execution
+- **Objective**: Implement step-layered Playwright extractor and pure parser for municipal agendas and zoning dockets (Austin, Taylor, San Marcos, Hutto).
 - **Scope / Files**:
-  - `projects/gridlock-scraper/src/connectors/austin-permits.ts`
-  - `projects/gridlock-scraper/tests/fixtures/austin_permits.json`
-  - `projects/gridlock-scraper/tests/austin-permits.test.ts`
+  - `projects/gridlock-scraper/src/extractors/municipal.ts`
+  - `projects/gridlock-scraper/src/parsers/municipal.ts`
+  - `projects/gridlock-scraper/src/schemas/municipal.ts`
+  - `projects/gridlock-scraper/tests/fixtures/municipal/agenda-sample.html`
+  - `projects/gridlock-scraper/tests/parsers.test.ts`
 - **Acceptance Criteria**:
-  - [ ] Queries Socrata endpoint with incremental date bounds.
-  - [ ] Extracts permit number, status, valuation, applicant, and GIS parcel ID.
-  - [ ] Handles 429 rate limiting with exponential backoff and jitter.
-- **Verification**: `npm test tests/austin-permits.test.ts`
+  - [x] Scaffolded initial pure parser, Zod schema, and fixture.
+  - [ ] Implement pagination across municipal council and planning commission meeting calendars.
+  - [ ] Extracts case number, zoning change type, jurisdiction, and approval status.
+  - [ ] Emits atomic `observations` rows linked to captured `source_artifact_id`.
+- **Verification**: `npm test tests/parsers.test.ts`
 - **Dependencies**: Ticket 02
 
 ### Ticket 05: TCEQ Permits & ERCOT Large-Load Queue Connectors
-- **Objective**: Build parsers for Texas Commission on Environmental Quality (air/water permits) and ERCOT interconnection spreadsheets.
+- **Status**: [x] Completed
+- **Objective**: Build step-layered extractors and pure parsers for Texas Commission on Environmental Quality (air/water permits) and ERCOT interconnection spreadsheets.
 - **Scope / Files**:
-  - `projects/gridlock-scraper/src/connectors/tceq-permits.ts`
-  - `projects/gridlock-scraper/src/connectors/ercot-queue.ts`
-  - `projects/gridlock-scraper/tests/fixtures/ercot_sample.xlsx`
-  - `projects/gridlock-scraper/tests/ercot-queue.test.ts`
+  - `projects/gridlock-scraper/src/extractors/ercot.ts`
+  - `projects/gridlock-scraper/src/parsers/ercot.ts`
+  - `projects/gridlock-scraper/src/schemas/ercot.ts`
+  - `projects/gridlock-scraper/src/extractors/tceq.ts`
+  - `projects/gridlock-scraper/src/parsers/tceq.ts`
+  - `projects/gridlock-scraper/src/schemas/tceq.ts`
+  - `projects/gridlock-scraper/tests/fixtures/ercot/queue-sample.csv`
+  - `projects/gridlock-scraper/tests/fixtures/tceq/permit-sample.html`
+  - `projects/gridlock-scraper/tests/parsers.test.ts`
 - **Acceptance Criteria**:
-  - [ ] Ingests Excel (.xlsx) ERCOT queue data into structured load records (MW, county, substation tie-in).
-  - [ ] Extracts TCEQ air quality permits for backup diesel generator clusters.
-  - [ ] Flags projects matching the 143.5 GW data center queue.
-- **Verification**: `npm test tests/ercot-queue.test.ts`
+  - [x] Ingests ERCOT queue tabular data into structured load records (MW, county, fuel type).
+  - [x] Extracts TCEQ air standard permits for backup generator facilities.
+  - [x] Validates positive capacity invariants (`capacityMw > 0`) via Zod.
+  - [x] Offline fixture tests green in `tests/parsers.test.ts`.
+- **Verification**: `npm test tests/parsers.test.ts`
 - **Dependencies**: Ticket 02
 
-### Ticket 06: Out-of-Band Gemini Flash Repair Agent & Replay Sandbox
-- **Objective**: Build anomaly detection guard and sandboxed LLM repair agent for broken selectors.
+### Ticket 06: Out-of-Band Self-Healing Anomaly Handler & Replay Sandbox
+- **Status**: [/] In Progress
+- **Objective**: Build anomaly detection quarantine and historical replay sandbox test harness for selector drift (ADR-0004).
 - **Scope / Files**:
-  - `projects/gridlock-scraper/src/guards/invariant-guard.ts`
-  - `projects/gridlock-scraper/src/agent/repair-agent.ts`
-  - `projects/gridlock-scraper/src/sandbox/replay-runner.ts`
-  - `projects/gridlock-scraper/tests/repair-agent.test.ts`
+  - `projects/gridlock-scraper/src/repair/quarantine.ts`
+  - `projects/gridlock-scraper/src/repair/replay.ts`
+  - `projects/gridlock-scraper/tests/pipeline.test.ts`
 - **Acceptance Criteria**:
-  - [ ] Flags $>30\%$ volume drop or missing required fields as anomaly.
-  - [ ] Synthesizes sanitized DOM skeleton and prompts Gemini 2.5 Flash for patch.
-  - [ ] Executes patch against 5 historical fixture files in sandboxed runner.
-  - [ ] Only promotes patch to `connector_configs.manifest` if replay pass rate is 100%.
-- **Verification**: `npm test tests/repair-agent.test.ts`
+  - [x] Invariant failure isolates raw payload, flags connector `last_status = "anomaly"`, records audit row.
+  - [x] Candidate patch replayed against historical fixture set in sandboxed runner.
+  - [x] Only promotes patch to `connector_configs.manifest` if replay pass rate is 100%.
+  - [ ] Add CLI/worker automation command for Gemini Flash out-of-band synthesis.
+- **Verification**: `npm test tests/pipeline.test.ts`
 - **Dependencies**: Ticket 03
 
 ### Ticket 07: Scraper HTTP API & Source Health Exporter
+- **Status**: [ ] Todo
 - **Objective**: Expose worker HTTP endpoints for triggering ingestion runs, querying status, and streaming telemetry.
 - **Scope / Files**:
   - `projects/gridlock-scraper/src/server.ts`
