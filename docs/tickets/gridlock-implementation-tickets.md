@@ -11,6 +11,7 @@ Implementation proceeds along a 5-phase tracer-bullet sequence across the decoup
 3. **Phase 3: Generative Analytical Workspace (`gridlock-generative-console`)** — Tickets 13–17: UI AST planner, in-place workspace mutation, curated widget palette, and forensic Evidence Viewer.
 4. **Phase 4: Portfolio Gateway Integration (`sam-johnson-portfolio`)** — Ticket 18: Live gateway surface wiring and Source Health console.
 5. **Phase 5: Ingestion Deployment & Production Scheduling (`gridlock-scraper`)** — Tickets 19–22: Containerization, CLI runner, state/artifact R2 sync, and scheduled GitHub Actions orchestration.
+6. **Phase 6: Scraper Hardening & Review Follow-ups (`gridlock-scraper`)** — Tickets 23–29: ERCOT asset download lifecycle, quarantine approval gating, manifest patch persistence, strict status validation, action type inference, and quarantine media types.
 
 ---
 
@@ -357,4 +358,113 @@ Implementation proceeds along a 5-phase tracer-bullet sequence across the decoup
   - [ ] Dispatches webhook alert (Discord/Slack) if CLI exits with code `2` (anomaly quarantined).
 - **Verification**: `gh workflow view ingest.yml` or manual dry-run
 - **Dependencies**: Ticket 19, Ticket 20, Ticket 21
+
+---
+
+## Phase 6: Scraper Hardening & Review Follow-ups (`gridlock-scraper`)
+
+### Ticket 23: Playwright Download Lifecycle for ERCOT Interconnection Queue
+- **System**: `gridlock-scraper`
+- **Objective**: Intercept and download linked XLSX/CSV spreadsheet payloads during ERCOT queue extraction instead of capturing portal HTML.
+- **Reference**: Codex PR #1 comment on `src/extractors/ercot.ts:27`
+- **Scope / Files**:
+  - `projects/gridlock-scraper/src/extractors/ercot.ts`
+  - `projects/gridlock-scraper/tests/extractors.test.ts`
+- **Acceptance Criteria**:
+  - [ ] Implement Playwright download listener (`page.waitForEvent('download')`) to capture linked ERCOT GIS report spreadsheet.
+  - [ ] Set accurate extraction content type (`text/csv` or Excel MIME type).
+  - [ ] Pipe downloaded binary buffer to raw extraction result content.
+  - [ ] Fall back gracefully or raise extraction anomaly on network timeout.
+- **Verification**: `npm test` and mock offline extractor tests.
+- **Dependencies**: Ticket 05
+
+### Ticket 24: Replay Audit Approval Gate for Quarantine Reprocessing
+- **System**: `gridlock-scraper`
+- **Objective**: Gate quarantine payload release on verified out-of-band promotion, requiring a verified `repair_audits` record before re-evaluating and promoting a quarantined artifact.
+- **Reference**: Codex PR #1 comment on `src/jobs/runner.ts:80`
+- **Scope / Files**:
+  - `projects/gridlock-scraper/src/jobs/runner.ts`
+  - `projects/gridlock-scraper/src/storage/db.ts`
+  - `projects/gridlock-scraper/tests/pipeline.test.ts`
+- **Acceptance Criteria**:
+  - [ ] Query `repair_audits` for connector status `promoted` before attempting quarantine re-ingestion.
+  - [ ] Unreviewed parser runs leave failing payload in quarantine without false anomaly clearing.
+  - [ ] Reprocessing requires verified promotion proof.
+- **Verification**: `npm test tests/pipeline.test.ts`
+- **Dependencies**: Ticket 06
+
+### Ticket 25: Patch Manifest Persistence on Promoted Replay Verification
+- **System**: `gridlock-scraper`
+- **Objective**: Persist candidate patch descriptions (`proposedPatchDescription`) into `connector_configs.manifest` atomically upon successful replay verification.
+- **Reference**: Codex PR #1 comment on `src/repair/replay.ts:73`
+- **Scope / Files**:
+  - `projects/gridlock-scraper/src/repair/replay.ts`
+  - `projects/gridlock-scraper/src/storage/db.ts`
+  - `projects/gridlock-scraper/tests/pipeline.test.ts`
+- **Acceptance Criteria**:
+  - [ ] When `evaluateCandidatePatch` passes 100%, update `connector_configs.manifest` with the proposed patch.
+  - [ ] Atomically commit audit record, manifest update, and connector status `ok`.
+  - [ ] Subsequent scraper executions load updated selectors from `connector_configs.manifest`.
+- **Verification**: `npm test tests/pipeline.test.ts`
+- **Dependencies**: Ticket 06
+
+### Ticket 26: Mandatory Semantic Oracles for Replay Fixture Evaluation
+- **System**: `gridlock-scraper`
+- **Objective**: Require semantic assertions (`expectedMinCount` or `expectedSubjectIds` or `expectedAssertion`) on all `ReplayFixture` instances, prohibiting expectation-free fixture promotion.
+- **Reference**: Codex PR #1 comment on `src/repair/replay.ts:10`
+- **Scope / Files**:
+  - `projects/gridlock-scraper/src/repair/replay.ts`
+  - `projects/gridlock-scraper/tests/pipeline.test.ts`
+- **Acceptance Criteria**:
+  - [ ] Enforce in TypeScript and runtime that `ReplayFixture` must provide at least one semantic oracle.
+  - [ ] Reject any fixture evaluation where no semantic oracle is specified.
+  - [ ] Update all pipeline and repair tests to provide explicit expected counts and IDs.
+- **Verification**: `npm test tests/pipeline.test.ts`
+- **Dependencies**: Ticket 06
+
+### Ticket 27: Strict Municipal Docket Status Validation
+- **System**: `gridlock-scraper`
+- **Objective**: Eliminate synthetic fallback to `"under_review"` when `.action-status` is missing or contains unsupported values, failing validation to trigger anomaly quarantine.
+- **Reference**: Codex PR #1 comment on `src/parsers/municipal.ts:39`
+- **Scope / Files**:
+  - `projects/gridlock-scraper/src/parsers/municipal.ts`
+  - `projects/gridlock-scraper/src/schemas/municipal.ts`
+  - `projects/gridlock-scraper/tests/parsers.test.ts`
+- **Acceptance Criteria**:
+  - [ ] Remove `|| "under_review"` fallback from `parseMunicipalAgenda`.
+  - [ ] Missing or unmapped status values pass raw or undefined to `validateMunicipalInvariants`.
+  - [ ] Zod schema rejects invalid statuses, triggering quarantine isolation on selector drift.
+- **Verification**: `npm test tests/parsers.test.ts`
+- **Dependencies**: Ticket 04
+
+### Ticket 28: Dynamic Municipal Action Type Classification
+- **System**: `gridlock-scraper`
+- **Objective**: Extract and derive the actual municipal action type (`zoning`, `annexation`, `site_plan`, `building_permit`, `hearing`, `variance`) from agenda docket items rather than hardcoding `"zoning"`.
+- **Reference**: Codex PR #1 comment on `src/parsers/municipal.ts:44`
+- **Scope / Files**:
+  - `projects/gridlock-scraper/src/parsers/municipal.ts`
+  - `projects/gridlock-scraper/src/schemas/municipal.ts`
+  - `projects/gridlock-scraper/tests/parsers.test.ts`
+- **Acceptance Criteria**:
+  - [ ] Extract explicit `.action-type` element or classify from title/body regex.
+  - [ ] Map into validated `MunicipalActionType` enum in `src/schemas/municipal.ts`.
+  - [ ] Fail validation on unclassifiable or missing action types.
+- **Verification**: `npm test tests/parsers.test.ts`
+- **Dependencies**: Ticket 04
+
+### Ticket 29: Quarantine Media Type & Storage Extension Preservation
+- **System**: `gridlock-scraper`
+- **Objective**: Preserve the actual `contentType` and file extension of failing payloads during quarantine instead of hardcoding `text/html`.
+- **Reference**: Codex PR #1 comment on `src/repair/quarantine.ts:34`
+- **Scope / Files**:
+  - `projects/gridlock-scraper/src/repair/quarantine.ts`
+  - `projects/gridlock-scraper/src/jobs/runner.ts`
+  - `projects/gridlock-scraper/tests/pipeline.test.ts`
+- **Acceptance Criteria**:
+  - [ ] Pass `contentType` and deducted file extension into `quarantineExtractionFailure`.
+  - [ ] Store CSV/PDF/JSON payloads under their canonical format in `ArtifactStore` and `source_artifacts`.
+  - [ ] Accurate provenance metadata recorded for downstream replay tooling.
+- **Verification**: `npm test tests/pipeline.test.ts`
+- **Dependencies**: Ticket 02, Ticket 06
+
 
