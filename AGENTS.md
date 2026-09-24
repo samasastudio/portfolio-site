@@ -20,7 +20,7 @@
 - **Server-First (RSC)**: All route pages (`/`, `/work`, `/profile`, `/contact`) and layouts are Server Components by default.
 - **Isolated Leaf Hydration**: Only interactive leaves take `'use client'` (`LiveClock`, `NavRail`, and `ProjectArchive`).
 - **System Gateway Surface**: The portfolio serves as the primary frontend gateway for the Three Compute Atlas systems (canonical `gridlock-` prefix):
-  1. *`gridlock-scraper`*: Deterministic ingestion across TDLR, municipal agendas, TCEQ, and ERCOT queues with out-of-band self-healing repair (`/systems/scraper`).
+  1. *`gridlock-scraper`*: Step-layered ingestion engine across TDLR, municipal agendas, TCEQ, and ERCOT queues with out-of-band self-healing replay (`/systems/scraper`). Architecture governed by ADR-0001 through ADR-0005 and `scraper-architecture-standards`.
   2. *`gridlock-graphical-atlas`*: Living temporal technical cartography combining GIS vector geometry with stateful generative plates (`/systems/graphical-atlas`).
   3. *`gridlock-generative-console`*: Dynamic investigative workspace translating intent into strongly-typed UI AST layouts (`/systems/generative-ui`).
 - **Gateway Compatibility Invariant**: System ID renames must preserve backward-compatible alias resolution (`LEGACY_ID_MAP` in `app/_data/systems.ts`) for legacy identifiers (`atx-*`) and historical URL slugs.
@@ -121,3 +121,4 @@ app/
 - **Impeccable Workflow**: New surfaces default to `comp-first` (generate visual comp before code) per [`.impeccable/config.json`](./.impeccable/config.json). Maintain [`DESIGN.md`](./DESIGN.md) and [`.impeccable/design.json`](./.impeccable/design.json) synchronization. For comp and plate image generation, use the harness-native `generate_image` tool directly; never require or prompt for `OPENAI_API_KEY` (Impeccable CLI fallback is unnecessary in Antigravity).
 - Verify changes with `npm test` or `npx tsc --noEmit` before concluding tasks.
 - **Git Hook & Commit Standards**: Commits are automatically gated by Husky. All commit messages must strictly conform to Conventional Commits (`feat:`, `fix:`, `docs:`, `chore:`, `refactor:`, `test:`, `perf:`) enforced by `@commitlint/cli`. Never use `--no-verify` to bypass pre-commit or commit-msg hooks.
+- **Windows PowerShell Shell Invariant**: Never use `&&` to chain commands in PowerShell (causes fatal `ParserError`). Separate sequential commands with `;` or execute them in separate tool invocations.
