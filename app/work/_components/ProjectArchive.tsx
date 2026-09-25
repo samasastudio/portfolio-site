@@ -64,7 +64,7 @@ export function ProjectArchive({ items, subtitle, note }: ProjectArchiveProps) {
           >
             <small>FILE {item.n}</small>
             <span>{item.title}</span>
-            <b>{active === i ? "✦" : "＋"}</b>
+            <b aria-hidden="true">{active === i ? "✦" : "＋"}</b>
           </button>
         ))}
       </div>
