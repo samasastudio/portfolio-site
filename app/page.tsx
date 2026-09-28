@@ -8,7 +8,7 @@ export default function Home() {
       <HeroCopy />
       <section
         className="hero-object"
-        aria-label="Sam Johnson snake and computer emblem"
+        aria-label="Sam Johnson Compute Atlas emblem"
       >
         <BrandEmblem />
         <CapabilityShelves />
