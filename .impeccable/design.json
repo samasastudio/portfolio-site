@@ -246,7 +246,7 @@
     "keyCharacteristics": [
       "Disciplined, tactile, punchy, and indelible; archival precision meeting high-contrast grit.",
       "Flat paper planes layered with hard-edge offset drop shadows (zero diffuse blurry elevation).",
-      "Typographic tri-system: tight-tracked display sans, literary Georgia serif italics, and uppercase monospace micro-indices.",
+      "Typographic tri-system: geometric modernist Geomanist display/sans, literary Tinos editorial serif italics, and architectural Basier Mono micro-indices (Nodes 24 provenance).",
       "Asymmetrical hand-stamped badges rotated off-axis against rigid structural layout grids.",
       "Visible tactile noise texture (mix-blend-mode: multiply) applied across the entire viewport."
     ],
@@ -262,13 +262,13 @@
         "section": "colors"
       },
       {
-        "name": "The Labyrinth & Linotype Rule",
-        "body": "Monospace micro-labels must never exceed 8px. They serve strictly as precision navigational coordinates and catalog numbers, anchoring the eye without competing with display headlines.",
+        "name": "The Accessible Linotype Rule",
+        "body": "Monospace micro-labels must maintain an accessible floor of 8.5px–10px; sub-8px text is strictly prohibited. Archival density is achieved through generous tracking (0.12em) and muted ink opacity, ensuring WCAG AA legibility while preserving catalog taxonomy.",
         "section": "typography"
       },
       {
         "name": "The Soul in Italics Rule",
-        "body": "Emotional resonance, philosophical stances, and visual emphasis belong in Georgia serif italics (em), creating a tactile dialogue with the rigid sans frame.",
+        "body": "Emotional resonance, philosophical stances, and visual emphasis belong in Tinos serif italics (em), creating a tactile dialogue with the rigid geometric sans frame.",
         "section": "typography"
       },
       {

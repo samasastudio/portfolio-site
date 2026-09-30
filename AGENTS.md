@@ -93,18 +93,18 @@ app/
   - Ink: `--ink` (Sumi Tattoo Ink `#191b18`)
   - Flash & Accents: `--rust` (Vermilion Cinnabar `#b64c31`), `--indigo` (Deep Indigo `#263b61`), `--moss` (Sumi Pine `#67745a`), `--cedar` (Aged Cedar `#805b42`), `--yellow` (Ochre Gold `#d6a934`)
   - Transitions: `--ease` (`cubic-bezier(.16, 1, .3, 1)`)
-- **Typographic Triad (27 Caractères Homage)**:
-  - Primary Sans: `Fira Sans` (`--font-sans`) — humanist editorial clarity, structured geometry with calligraphic terminals.
-  - Book Serif: `Newsreader` (`--font-serif`) — literary reading room voice, sharp optical serifs, and italic emphasis (`em`).
-  - Technical Spine: `IBM Plex Mono` (`--font-mono`) — technical catalogue indexing, tabular alignment, and micro-labels.
+- **Typographic Triad (Nodes 24 Provenance — Fonts In Use #76632)**:
+  - Primary Sans / Structural Geometry: `Geomanist` (`--font-sans`) — modernist geometric clarity, bold display mastheads, and editorial running decks.
+  - Literary Editorial Serif: `Tinos` (`--font-serif`) — transitional reading room voice, classical roman proportions, and calligraphic italic emphasis (`em`).
+  - Technical Spine: `Basier Mono` (`--font-mono`) — architectural neo-grotesque monospacing, Austin geographic coordinates, tabular alignment, and micro-labels.
   - Canonical Token Ramp: All type sizes must use tokenized variables defined in `globals.css` (`--type-display`, `--type-headline`, `--type-title`, `--type-subhead`, `--type-body`, `--type-body-sm`, `--type-stat`, `--type-label`, `--type-glyph-sm`, `--type-glyph-md`). Ad-hoc inline `clamp()` values are banned.
 - **Named System Invariants**:
   - *The Flash Rarity Rule*: Cinnabar and Ochre Gold are reserved for focal accents ($\le 10\%$ of surface).
   - *The No-Faux-White Rule*: Pure digital white (`#ffffff`) is banned; surfaces use warm paper stock.
   - *The Indelible Offset Rule*: Zero Gaussian blur shadows; elevation is physical hard offsets (`4px 4px 0`, `5px 5px 0`).
   - *The Accessible Linotype Rule*: Monospace micro-labels must maintain an accessible floor of 8.5px–10px; sub-8px text is banned. Archival density is achieved through uppercase tracking (`0.12em`) and muted ink opacity (`opacity-60`), not sub-readable font sizes.
-  - *The Soul in Italics Rule*: Reflective emphasis lives in `Newsreader` serif italics (`em`).
-  - *The Specimen Scale Rule*: Typography follows the editorial specimen discipline of *27 Caractères* (Fonts In Use #25902). Never introduce arbitrary font families or untokenized font sizes. Headings must enforce `text-wrap: balance; overflow-wrap: break-word;`, and body paragraphs must enforce `text-wrap: pretty; overflow-wrap: break-word;`.
+  - *The Soul in Italics Rule*: Reflective emphasis lives in `Tinos` serif italics (`em`).
+  - *The Specimen Scale Rule*: Typography follows the editorial publication discipline of *Nodes 24* (Fonts In Use #76632). Never introduce arbitrary font families or untokenized font sizes. Headings must enforce `text-wrap: balance; overflow-wrap: break-word;`, and body paragraphs must enforce `text-wrap: pretty; overflow-wrap: break-word;`.
   - *The Tactile Grain Rule*: Preserve the ambient fractal noise overlay across viewports.
   - *The Zero-Pulsing-Dot Rule*: Banned cosmetic pulsing dots (`@keyframes pulse`) and ambient gradient halos (`radial-halo`). Status beacons must be steady, static marks; only genuinely streaming data channels may animate.
   - *The Complete Slop Sweep Rule*: When auditing or eliminating AI slop patterns (per `impeccable.style/slop`), sweep all shell zones (TopBar, NavRail, Stage, Footer) without rationalizing exceptions for cosmetic animations.
