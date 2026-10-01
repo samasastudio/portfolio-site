@@ -13,6 +13,7 @@
 - **Framework**: Next.js 16 (App Router) + React 19 + TypeScript + Vite / Cloudflare Workers runtime (`vinext`).
 - **Database**: Drizzle ORM (`drizzle-orm`, `drizzle-kit`). All data access must use typed Drizzle schema definitions; never write raw untyped SQL strings.
 - **Styling**: Tailwind CSS v4 (`@tailwindcss/postcss`). Never use arbitrary inline CSS strings when classes/variables exist.
+- **Webfont Hosting Invariant**: Due to Windows filesystem path normalization bugs in `vinext:google-fonts` dev transforms, never use `next/font/google` for webfonts in this project. All custom and licensed fonts (`Geomanist`, `Tinos`, `Basier Mono`) must be self-hosted as clean `.woff2` files under `public/fonts/<family>/` and declared via origin-relative `@font-face` rules in `app/globals.css`.
 
 ---
 
@@ -93,16 +94,18 @@ app/
   - Ink: `--ink` (Sumi Tattoo Ink `#191b18`)
   - Flash & Accents: `--rust` (Vermilion Cinnabar `#b64c31`), `--indigo` (Deep Indigo `#263b61`), `--moss` (Sumi Pine `#67745a`), `--cedar` (Aged Cedar `#805b42`), `--yellow` (Ochre Gold `#d6a934`)
   - Transitions: `--ease` (`cubic-bezier(.16, 1, .3, 1)`)
-- **Typographic Hierarchy**:
-  - Headings: Display sans with tight tracking.
-  - Emphasis: Georgia serif italics (`em`).
-  - Metadata / Micro-labels: Uppercase monospace (`font-mono text-[9px] tracking-widest`).
+- **Typographic Triad (Nodes 24 Provenance — Fonts In Use #76632)**:
+  - Primary Sans / Structural Geometry: `Geomanist` (`--font-sans`) — modernist geometric clarity, bold display mastheads, and editorial running decks.
+  - Literary Editorial Serif: `Tinos` (`--font-serif`) — transitional reading room voice, classical roman proportions, and calligraphic italic emphasis (`em`).
+  - Technical Spine: `Basier Mono` (`--font-mono`) — architectural neo-grotesque monospacing, Austin geographic coordinates, tabular alignment, and micro-labels.
+  - Canonical Token Ramp: All type sizes must use tokenized variables defined in `globals.css` (`--type-display`, `--type-headline`, `--type-title`, `--type-subhead`, `--type-body`, `--type-body-sm`, `--type-stat`, `--type-label`, `--type-glyph-sm`, `--type-glyph-md`). Ad-hoc inline `clamp()` values are banned.
 - **Named System Invariants**:
   - *The Flash Rarity Rule*: Cinnabar and Ochre Gold are reserved for focal accents ($\le 10\%$ of surface).
   - *The No-Faux-White Rule*: Pure digital white (`#ffffff`) is banned; surfaces use warm paper stock.
   - *The Indelible Offset Rule*: Zero Gaussian blur shadows; elevation is physical hard offsets (`4px 4px 0`, `5px 5px 0`).
   - *The Accessible Linotype Rule*: Monospace micro-labels must maintain an accessible floor of 8.5px–10px; sub-8px text is banned. Archival density is achieved through uppercase tracking (`0.12em`) and muted ink opacity (`opacity-60`), not sub-readable font sizes.
-  - *The Soul in Italics Rule*: Reflective emphasis lives in Georgia serif italics.
+  - *The Soul in Italics Rule*: Reflective emphasis lives in `Tinos` serif italics (`em`).
+  - *The Specimen Scale Rule*: Typography follows the editorial publication discipline of *Nodes 24* (Fonts In Use #76632). Never introduce arbitrary font families or untokenized font sizes. Headings must enforce `text-wrap: balance; overflow-wrap: break-word;`, and body paragraphs must enforce `text-wrap: pretty; overflow-wrap: break-word;`.
   - *The Tactile Grain Rule*: Preserve the ambient fractal noise overlay across viewports.
   - *The Zero-Pulsing-Dot Rule*: Banned cosmetic pulsing dots (`@keyframes pulse`) and ambient gradient halos (`radial-halo`). Status beacons must be steady, static marks; only genuinely streaming data channels may animate.
   - *The Complete Slop Sweep Rule*: When auditing or eliminating AI slop patterns (per `impeccable.style/slop`), sweep all shell zones (TopBar, NavRail, Stage, Footer) without rationalizing exceptions for cosmetic animations.
@@ -114,6 +117,7 @@ app/
     1. Break the system into modular, sequential sub-flows (Macro Flow, Core Execution/Gate, Failure/Repair Loop).
     2. Enforce explicit readable font size variables in Mermaid blocks (`%%{init: {'theme': 'neutral', 'themeVariables': { 'fontSize': '15px' }}}%%`).
     3. When preparing documentation for formal review, deliver as a dedicated markdown review artifact rather than a single compressed chat message.
+  - *The Triad Source Synchronization Rule*: Any change to typography, colors, elevation, or system domain names must be atomically synchronized across all five design authority surfaces: `app/globals.css`, `DESIGN.md`, `.impeccable/design.json`, `PRODUCT.md`, and `AGENTS.md`. Leaving machine-readable files (`design.json`) or product scopes (`PRODUCT.md`) unsynchronized causes comp generators and subsequent agent sessions to reintroduce obsolete patterns.
 - **Anti-AI Slop**: No generic purple-on-white gradients, unstyled system fonts, or cookie-cutter templates. Preserve tactile noise textures, subtle drop shadows, and editorial framing.
 
 ---
@@ -122,7 +126,12 @@ app/
 - Follow the workflows defined in [`docs/ENGINEERING_WORKFLOWS.md`](./docs/ENGINEERING_WORKFLOWS.md).
 - Use `tdd` for test-first development at public seams.
 - Use `diagnosing-bugs` for hypothesis-driven debugging without symptom-patching.
+- **Empirical Typography & Asset Verification**: When diagnosing font linking, visual styling, or asset loading issues, never make speculative styling changes. Verify empirical browser state via DevTools MCP before and after modifications:
+  1. `list_console_messages`: Ensure 0 local resource security errors (`file:///`) or 404s.
+  2. `list_network_requests`: Verify `200 OK` for every font woff2 asset.
+  3. `evaluate_script`: Assert `document.fonts.check('<weight> <size> <Family>') === true` and verify `window.getComputedStyle(el).fontFamily`.
+  4. `take_screenshot`: Visually confirm correct glyph rendering and weight contrast.
 - **Impeccable Workflow**: New surfaces default to `comp-first` (generate visual comp before code) per [`.impeccable/config.json`](./.impeccable/config.json). Maintain [`DESIGN.md`](./DESIGN.md) and [`.impeccable/design.json`](./.impeccable/design.json) synchronization. For comp and plate image generation, use the harness-native `generate_image` tool directly; never require or prompt for `OPENAI_API_KEY` (Impeccable CLI fallback is unnecessary in Antigravity).
 - Verify changes with `npm test` or `npx tsc --noEmit` before concluding tasks.
-- **Git Hook & Commit Standards**: Commits are automatically gated by Husky. All commit messages must strictly conform to Conventional Commits (`feat:`, `fix:`, `docs:`, `chore:`, `refactor:`, `test:`, `perf:`) enforced by `@commitlint/cli`. Never use `--no-verify` to bypass pre-commit or commit-msg hooks.
+- **Git Hook & Commit Standards**: Commits are automatically gated by Husky. All commit messages must strictly conform to Conventional Commits (`feat:`, `fix:`, `docs:`, `chore:`, `refactor:`, `test:`, `perf:`) enforced by `@commitlint/cli`. Wrap all commit body lines at $\le 72$ characters (strict 100-character ceiling). Never use `--no-verify` to bypass pre-commit or commit-msg hooks.
 - **Windows PowerShell Shell Invariant**: Never use `&&` to chain commands in PowerShell (causes fatal `ParserError`). Separate sequential commands with `;` or execute them in separate tool invocations.

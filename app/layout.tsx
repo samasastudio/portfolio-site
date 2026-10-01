@@ -1,9 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-
-const sans = Geist({ variable: "--font-sans", subsets: ["latin"] });
-const mono = Geist_Mono({ variable: "--font-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Sam Johnson — Software Engineer",
@@ -19,7 +15,7 @@ import { SiteFooter } from "./_components/layout/SiteFooter";
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className={`${sans.variable} ${mono.variable}`}>
+      <body>
         <SiteShell
           header={<TopBar />}
           nav={<NavRail />}

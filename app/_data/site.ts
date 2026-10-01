@@ -11,5 +11,5 @@ export const siteConfig = {
   copyrightHolder: "SAM ASA JOHNSON",
   tickerText: "BUILD THE SYSTEM · LEAVE THE MAP · MAKE THE HARD PART FEEL HUMAN",
   linkedinUrl: "https://www.linkedin.com/in/sam-asa-johnson",
-  snakeMarkImage: "/sam-johnson-snake-mark.png",
+  snakeMarkImage: "/sam-johnson-compute-atlas.jpg",
 } as const;

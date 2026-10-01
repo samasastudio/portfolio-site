@@ -13,34 +13,56 @@ colors:
   neutral-ink: "#191b18"
   neutral-line: "rgba(25, 27, 24, 0.24)"
   neutral-soft-line: "rgba(25, 27, 24, 0.12)"
+# Typographic Provenance: Nodes 24 specimen homage (Fonts In Use #76632)
 typography:
   display:
-    fontFamily: "var(--font-sans), Arial, sans-serif"
-    fontSize: "clamp(48px, 6.5vw, 102px)"
+    fontFamily: "Geomanist, system-ui, sans-serif"
+    fontSize: "clamp(44px, 5.5vw, 76px)"
     fontWeight: 650
-    lineHeight: 0.85
-    letterSpacing: "-0.07em"
+    lineHeight: 0.95
+    letterSpacing: "-0.04em"
   headline:
-    fontFamily: "var(--font-sans), Arial, sans-serif"
-    fontSize: "clamp(35px, 4vw, 66px)"
+    fontFamily: "Geomanist, system-ui, sans-serif"
+    fontSize: "clamp(30px, 3.4vw, 50px)"
     fontWeight: 600
-    lineHeight: 0.93
-    letterSpacing: "-0.052em"
+    lineHeight: 0.98
+    letterSpacing: "-0.035em"
   title:
-    fontFamily: "Georgia, 'Times New Roman', serif"
-    fontSize: "clamp(17px, 1.5vw, 23px)"
+    fontFamily: "Tinos, Georgia, serif"
+    fontSize: "clamp(17px, 1.4vw, 22px)"
     fontWeight: 400
-    lineHeight: 1.08
+    lineHeight: 1.15
+  subhead:
+    fontFamily: "Tinos, Georgia, serif"
+    fontSize: "15px"
+    fontWeight: 400
+    lineHeight: 1.55
   body:
-    fontFamily: "var(--font-sans), Arial, sans-serif"
+    fontFamily: "Geomanist, system-ui, sans-serif"
     fontSize: "14px"
     fontWeight: 400
     lineHeight: 1.62
+  caption:
+    fontFamily: "Geomanist, system-ui, sans-serif"
+    fontSize: "12px"
+    fontWeight: 400
+    lineHeight: 1.5
+  stat:
+    fontFamily: "Basier Mono, monospace"
+    fontSize: "11px"
+    fontWeight: 600
+    lineHeight: 1
+    letterSpacing: "0.06em"
   label:
-    fontFamily: "var(--font-mono), monospace"
+    fontFamily: "Basier Mono, monospace"
     fontSize: "9px"
     fontWeight: 400
+    lineHeight: 1.25
     letterSpacing: "0.12em"
+  glyph:
+    fontFamily: "Basier Mono, monospace"
+    fontSize: "18px"
+    fontWeight: 400
 rounded:
   none: "0px"
   sm: "2px"
@@ -127,28 +149,31 @@ The palette draws strictly from flash pigments and archival paper stocks: indeli
 
 ## Typography
 
-The typographic hierarchy combines three distinct voices: an authoritative tight-tracked sans for structural declarations, Georgia serif italics for human reflection, and uppercase monospace micro-labels for navigational and temporal coordinates.
+The typographic hierarchy combines three distinct voices inspired by the riso-printed publication design of Nodes 24 (Numero Cromatico, Fonts In Use #76632): geometric modernist impact in Geomanist, literary humanist depth in Tinos serif italics, and engineered architectural monospacing in Basier Mono.
 
-**Display Font:** Geist Sans (`--font-sans`), with Arial fallback.
-**Body Font:** Geist Sans (`--font-sans`), with Arial fallback.
-**Emphasis/Serif Font:** Georgia, "Times New Roman", serif.
-**Label/Mono Font:** Geist Mono (`--font-mono`), with monospace fallback.
+**Display / Structural Sans:** Geomanist (`--font-sans`), with system-ui fallback.
+**Literary / Editorial Serif:** Tinos (`--font-serif`), with Georgia fallback.
+**Technical Spine / Mainframe Mono:** Basier Mono (`--font-mono`), with monospace fallback.
 
-**Character:** Technical discipline punctuated by literary warmth and archival taxonomy.
+**Character:** Riso-printed neuroaesthetics journal precision: geometric clarity on washi paper stocks, accentuated by sharp cinnabar italic callouts and typewriter catalog taxonomy.
 
-### Hierarchy
-- **Display** (Weight 650, `clamp(48px, 6.5vw, 102px)`, Line-height 0.85, Letter-spacing -0.07em): Hero headlines and stage banners. Dense, architectural, and commanding.
-- **Headline** (Weight 600, `clamp(35px, 4vw, 66px)`, Line-height 0.93, Letter-spacing -0.052em): Featured system card titles and secondary section leads.
-- **Title** (Weight 400, `clamp(17px, 1.5vw, 23px)`, Line-height 1.08): Georgia serif archive project listings and catalogue titles.
-- **Body** (Weight 400, 14px, Line-height 1.62): Explanatory paragraphs, case study narratives, and reading room manifesto copy (max line length 65–75ch).
-- **Label** (Weight 400, 9px, Letter-spacing 0.12em, Uppercase): Coordinates, index numbers (`01/02/03`), timestamps, status beacons, and ticker items.
+### Hierarchy & Scale Ramp
+- **Display** (Weight 650/700, `clamp(44px, 5.5vw, 76px)`, Line-height 0.95, Letter-spacing -0.04em, Geomanist): Hero headlines and stage banners. Fluid, dense, and architectural.
+- **Headline** (Weight 600, `clamp(30px, 3.4vw, 50px)`, Line-height 0.98, Letter-spacing -0.035em, Geomanist): Featured system card titles and secondary section leads.
+- **Title** (Weight 400, `clamp(17px, 1.4vw, 22px)`, Line-height 1.15, Tinos): Editorial serif archive project listings and catalogue titles.
+- **Subhead** (Weight 400, 15px, Line-height 1.55, Tinos): Manifesto prose paragraphs, tool discipline sets, and secondary reading items.
+- **Body** (Weight 400, 14px, Line-height 1.62, Geomanist): Explanatory paragraphs, case study narratives, and hero decks (max line length 65–75ch).
+- **Caption** (Weight 400, 12px, Line-height 1.5, Geomanist): Capability descriptions, technical specifications, and fine-print details.
+- **Stat** (Weight 600, 11px, Line-height 1.0, Letter-spacing 0.06em, Basier Mono Tabular): Operating principle indicators and live counters.
+- **Label** (Weight 400, 9px, Line-height 1.25, Letter-spacing 0.12em, Basier Mono Uppercase): Coordinates, index numbers (`01/02/03`), timestamps, status beacons, and ticker items.
+- **Glyph** (Weight 400, 18px / 15px, Basier Mono): Round link arrows (`b`), card star marks (`✦`), and functional UI indicators.
 
 ### Named Rules
 **The Accessible Linotype Rule.** Monospace micro-labels must maintain an accessible floor of 8.5px–10px; sub-8px text is strictly prohibited. Archival density is achieved through generous tracking (`0.12em`) and muted ink opacity, ensuring WCAG AA legibility while preserving catalog taxonomy.
 
 **The Zero-Pulsing-Dot Rule.** Surfaces reject decorative blinking dots and ambient gradient halos. Status indicators are steady, high-contrast marks; animations are reserved solely for genuinely live streaming data channels.
 
-**The Soul in Italics Rule.** Emotional resonance, philosophical stances, and visual emphasis belong in Georgia serif italics (`em`), creating a tactile dialogue with the rigid sans frame.
+**The Soul in Italics Rule.** Emotional resonance, philosophical stances, and visual emphasis belong in Tinos serif italics (`em`), creating a tactile dialogue with the rigid geometric sans frame.
 
 **The Singular Triad Rule.** Triad structures (three-column maps, three-line headlines, three-part slogan lists) are strictly banned outside the **Three Systems** archive. Reserving the number three exclusively for the core systems preserves its intentional architectural weight.
 

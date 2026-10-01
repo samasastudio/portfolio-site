@@ -1,5 +1,4 @@
 import { RoundLink } from "../ui/RoundLink";
-import { siteConfig } from "../../_data/site";
 
 export function HeroCopy() {
   return (

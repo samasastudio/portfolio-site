@@ -17,7 +17,7 @@ export function RoundLink({
   return (
     <Link className={`round-link ${className}`.trim()} href={href}>
       <span>{children}</span>
-      <b>{arrow}</b>
+      <b aria-hidden="true">{arrow}</b>
     </Link>
   );
 }
