@@ -13,6 +13,7 @@
 - **Framework**: Next.js 16 (App Router) + React 19 + TypeScript + Vite / Cloudflare Workers runtime (`vinext`).
 - **Database**: Drizzle ORM (`drizzle-orm`, `drizzle-kit`). All data access must use typed Drizzle schema definitions; never write raw untyped SQL strings.
 - **Styling**: Tailwind CSS v4 (`@tailwindcss/postcss`). Never use arbitrary inline CSS strings when classes/variables exist.
+- **Webfont Hosting Invariant**: Due to Windows filesystem path normalization bugs in `vinext:google-fonts` dev transforms, never use `next/font/google` for webfonts in this project. All custom and licensed fonts (`Geomanist`, `Tinos`, `Basier Mono`) must be self-hosted as clean `.woff2` files under `public/fonts/<family>/` and declared via origin-relative `@font-face` rules in `app/globals.css`.
 
 ---
 
@@ -116,6 +117,7 @@ app/
     1. Break the system into modular, sequential sub-flows (Macro Flow, Core Execution/Gate, Failure/Repair Loop).
     2. Enforce explicit readable font size variables in Mermaid blocks (`%%{init: {'theme': 'neutral', 'themeVariables': { 'fontSize': '15px' }}}%%`).
     3. When preparing documentation for formal review, deliver as a dedicated markdown review artifact rather than a single compressed chat message.
+  - *The Triad Source Synchronization Rule*: Any change to typography, colors, elevation, or system domain names must be atomically synchronized across all five design authority surfaces: `app/globals.css`, `DESIGN.md`, `.impeccable/design.json`, `PRODUCT.md`, and `AGENTS.md`. Leaving machine-readable files (`design.json`) or product scopes (`PRODUCT.md`) unsynchronized causes comp generators and subsequent agent sessions to reintroduce obsolete patterns.
 - **Anti-AI Slop**: No generic purple-on-white gradients, unstyled system fonts, or cookie-cutter templates. Preserve tactile noise textures, subtle drop shadows, and editorial framing.
 
 ---
@@ -124,7 +126,12 @@ app/
 - Follow the workflows defined in [`docs/ENGINEERING_WORKFLOWS.md`](./docs/ENGINEERING_WORKFLOWS.md).
 - Use `tdd` for test-first development at public seams.
 - Use `diagnosing-bugs` for hypothesis-driven debugging without symptom-patching.
+- **Empirical Typography & Asset Verification**: When diagnosing font linking, visual styling, or asset loading issues, never make speculative styling changes. Verify empirical browser state via DevTools MCP before and after modifications:
+  1. `list_console_messages`: Ensure 0 local resource security errors (`file:///`) or 404s.
+  2. `list_network_requests`: Verify `200 OK` for every font woff2 asset.
+  3. `evaluate_script`: Assert `document.fonts.check('<weight> <size> <Family>') === true` and verify `window.getComputedStyle(el).fontFamily`.
+  4. `take_screenshot`: Visually confirm correct glyph rendering and weight contrast.
 - **Impeccable Workflow**: New surfaces default to `comp-first` (generate visual comp before code) per [`.impeccable/config.json`](./.impeccable/config.json). Maintain [`DESIGN.md`](./DESIGN.md) and [`.impeccable/design.json`](./.impeccable/design.json) synchronization. For comp and plate image generation, use the harness-native `generate_image` tool directly; never require or prompt for `OPENAI_API_KEY` (Impeccable CLI fallback is unnecessary in Antigravity).
 - Verify changes with `npm test` or `npx tsc --noEmit` before concluding tasks.
-- **Git Hook & Commit Standards**: Commits are automatically gated by Husky. All commit messages must strictly conform to Conventional Commits (`feat:`, `fix:`, `docs:`, `chore:`, `refactor:`, `test:`, `perf:`) enforced by `@commitlint/cli`. Never use `--no-verify` to bypass pre-commit or commit-msg hooks.
+- **Git Hook & Commit Standards**: Commits are automatically gated by Husky. All commit messages must strictly conform to Conventional Commits (`feat:`, `fix:`, `docs:`, `chore:`, `refactor:`, `test:`, `perf:`) enforced by `@commitlint/cli`. Wrap all commit body lines at $\le 72$ characters (strict 100-character ceiling). Never use `--no-verify` to bypass pre-commit or commit-msg hooks.
 - **Windows PowerShell Shell Invariant**: Never use `&&` to chain commands in PowerShell (causes fatal `ParserError`). Separate sequential commands with `;` or execute them in separate tool invocations.
