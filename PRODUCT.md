@@ -13,9 +13,9 @@ Peer engineers, tech collaborators, engineering leaders, and hiring managers exp
 Dual-purpose web surface:
 1. Editorial engineering portfolio establishing Sam Johnson's background, engineering manifesto, and working set.
 2. Active frontend gateway hub for three upcoming system consoles:
-   - Generative UI Dashboard (`app/systems/generative-ui` / embedded console)
-   - Self-Healing Web Scraper (`app/systems/scraper` with external compute API/SSE)
-   - System Three (TBD)
+   - `gridlock-scraper`: Ingestion engine across TDLR, municipal agendas, TCEQ, and ERCOT queues (`/systems/scraper`).
+   - `gridlock-graphical-atlas`: Living temporal technical cartography combining GIS vector geometry with stateful generative plates (`/systems/graphical-atlas`).
+   - `gridlock-generative-console`: Dynamic investigative workspace translating intent into strongly-typed UI AST layouts (`/systems/generative-ui`).
 
 Success means delivering a tactile, high-craft editorial reading experience while seamlessly hosting live, runnable agentic system interfaces without cognitive or aesthetic clash.
 
@@ -38,7 +38,7 @@ Unlike generic software engineer portfolios relying on bulleted resumes and boil
 ## Brand Commitments
 - Name & Identity: Sam Asa Johnson (Sam Johnson), Austin, Texas.
 - Mark: Custom snake emblem mark (`/sam-johnson-snake-mark.png`, `BrandMark.tsx`, `BrandEmblem.tsx`).
-- Voice & Tone: Editorial, authoritative, grounded, restrained yet deeply crafted. Georgia serif italics for emphasis, tight sans tracking for display headings, uppercase monospace micro-labels (`font-mono text-[7px] tracking-widest`).
+- Voice & Tone: Editorial, authoritative, grounded, restrained yet deeply crafted. Tinos serif italics for emphasis, tight Geomanist display headings, uppercase Basier Mono micro-labels (`font-mono text-[9px] tracking-widest`).
 - Palette & Tactile Tokens: Warm paper canvas (`--paper: #f2eadc`, `--paper-light: #faf5ea`, `--paper-deep: #dfd1bc`), rich ink (`--ink: #191b18`), intentional accents (`--rust: #b64c31`, `--indigo: #263b61`, `--moss: #67745a`, `--cedar: #805b42`, `--yellow: #d6a934`).
 - Anti-Slop: Anti-AI boilerplate aesthetic; no generic purple gradients, no cookie-cutter templates, no unstyled system defaults.
 
